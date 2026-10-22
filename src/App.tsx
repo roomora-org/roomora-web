@@ -4,8 +4,10 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Spotlight } from "@/components/ui/Spotlight";
 import Home from "@/pages/Home";
-// import About from "@/pages/About";
-// import Contact from "@/pages/Contact";
+import About from "@/pages/AboutPage";
+import ContactPage from "@/pages/ContactPage";
+
+
 
 /** New page -> scroll to top. Link with #hash (e.g. /#pricing) -> scroll to that section. */
 function ScrollManager() {
@@ -36,8 +38,8 @@ function App() {
       <main className="flex-1 pt-20">
         <Routes>
           <Route path="/" element={<Home />} />
-          {/* <Route path="/about" element={<About />} /> */}
-          {/* <Route path="/contact" element={<Contact />} /> */}
+         <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<ContactPage />} />
         </Routes>
       </main>
       <Footer />
