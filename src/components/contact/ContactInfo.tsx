@@ -7,7 +7,7 @@ const contactDetails = [
   {
     icon: "✉",
     title: "Email Address",
-    value: "info@staypilot.com",
+    value: "info@roomora.com",
   },
   {
     icon: "◷",
