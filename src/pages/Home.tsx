@@ -9,10 +9,10 @@ import { CTA } from "@/components/landing-page/CTA";
 export default function Home() {
   return (
     <>
-      <SEO 
+      <SEO
         title="Smart Hotel Operations"
         description="Manage your hotel smartly from one place. Roomora helps you manage reservations, rooms, and tasks efficiently."
-        url="https://roomora.com"
+        path="/"
       />
       <Hero />
       <Features />

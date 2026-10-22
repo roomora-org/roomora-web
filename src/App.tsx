@@ -1,13 +1,33 @@
 import { useEffect } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
-import { Header } from "@/components/layout/Header";
-import { Footer } from "@/components/layout/Footer";
+import { PublicLayout } from "@/components/layout";
 import { Spotlight } from "@/components/ui/Spotlight";
-import Home from "@/pages/Home";
-// import About from "@/pages/About";
-// import Contact from "@/pages/Contact";
 
-/** New page -> scroll to top. Link with #hash (e.g. /#pricing) -> scroll to that section. */
+// Public Pages
+import Home from "@/pages/Home";
+import TermsPage from "@/pages/TermsPage";
+import PrivacyPage from "@/pages/PrivacyPage";
+
+// Auth Pages
+import {
+  LoginPage,
+  RegisterPage,
+  ForgotPasswordPage,
+  ResetPasswordPage,
+  VerifyEmailPage,
+} from "@/pages/auth";
+
+// Onboarding
+import OnboardingPage from "@/pages/OnboardingPage";
+
+// Error Pages
+import {
+  NotFoundPage,
+  ServerErrorPage,
+  UnauthorizedPage,
+  ForbiddenPage,
+} from "@/pages/errors";
+
 function ScrollManager() {
   const { pathname, hash } = useLocation();
 
@@ -15,7 +35,9 @@ function ScrollManager() {
     if (hash) {
       const id = decodeURIComponent(hash.slice(1));
       const t = window.setTimeout(() => {
-        document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+        document
+          .getElementById(id)
+          ?.scrollIntoView({ behavior: "smooth", block: "start" });
       }, 60);
       return () => window.clearTimeout(t);
     }
@@ -27,21 +49,51 @@ function ScrollManager() {
 
 function App() {
   return (
-    <div className="flex min-h-screen flex-col">
+    <>
       <ScrollManager />
-      {/* One spotlight for every page */}
       <Spotlight />
-      <Header />
-      {/* pt-20 = fixed header height. Pages should NOT add their own top offset beyond ~pt-12. */}
-      <main className="flex-1 pt-20">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          {/* <Route path="/about" element={<About />} /> */}
-          {/* <Route path="/contact" element={<Contact />} /> */}
-        </Routes>
-      </main>
-      <Footer />
-    </div>
+      <Routes>
+        {/* ============================================
+            Public Routes
+            ============================================ */}
+        <Route
+          path="/"
+          element={
+            <PublicLayout>
+              <Home />
+            </PublicLayout>
+          }
+        />
+
+        {/* ============================================
+            Legal Routes (self-wrapped with PublicLayout)
+            ============================================ */}
+        <Route path="/terms" element={<TermsPage />} />
+        <Route path="/privacy" element={<PrivacyPage />} />
+
+        {/* ============================================
+            Auth Routes
+            ============================================ */}
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
+        <Route path="/verify-email" element={<VerifyEmailPage />} />
+
+        {/* ============================================
+            Onboarding
+            ============================================ */}
+        <Route path="/onboarding" element={<OnboardingPage />} />
+
+        {/* ============================================
+            Error Routes
+            ============================================ */}
+        <Route path="/401" element={<UnauthorizedPage />} />
+        <Route path="/403" element={<ForbiddenPage />} />
+        <Route path="/500" element={<ServerErrorPage />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+    </>
   );
 }
 
