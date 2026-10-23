@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { FaGithub, FaLinkedin } from "react-icons/fa6";
 
 const teamMembers = [
@@ -57,6 +58,19 @@ const teamMembers = [
   },
 ];
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1 },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+};
+
 export function Team() {
   return (
     <section className="container-custom py-16">
@@ -72,54 +86,65 @@ export function Team() {
           smarter, and more efficient.
         </p>
       </div>
-      <div className="grid gap-6 sm:gap-7 sm:grid-cols-2 lg:grid-cols-3">
+
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+        className="grid gap-6 sm:gap-8 sm:grid-cols-2 lg:grid-cols-3"
+      >
         {teamMembers.map((member) => (
-          <article
+          <motion.article
             key={member.name}
-            className="group overflow-hidden rounded-2xl border border-line bg-surface-card shadow-sm transition-all duration-300 hover:-translate-y-2 hover:border-accent-400 hover:shadow-xl"
+            variants={itemVariants}
+            className="group flex flex-col items-center text-center rounded-2xl border border-line bg-surface-card p-6 sm:p-8 shadow-sm hover:-translate-y-2 hover:border-accent-400 hover:shadow-xl transition-all duration-300"
           >
-            <div className="overflow-hidden">
+            {/* Circular Image */}
+            <div className="relative mb-5">
+              <div className="absolute inset-0 rounded-full bg-accent-500/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               <img
                 src={member.image}
                 alt={member.name}
                 loading="lazy"
-                className="h-64 w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                className="relative h-28 w-28 sm:h-32 sm:w-32 rounded-full object-cover ring-4 ring-surface-card shadow-lg group-hover:ring-accent-400 transition-all duration-300"
               />
             </div>
-            <div className="p-6 text-center">
-              <h3 className="text-xl font-bold text-fg-strong">
-                {member.name}
-              </h3>
-              <p className="mt-2 text-sm font-semibold text-brand">
-                {member.role}
-              </p>
-              <p className="mt-4 min-h-12 text-sm leading-6 text-fg-muted">
-                {member.description}
-              </p>
-              <div className="mt-5 flex justify-center gap-3">
-                <a
-                  href={member.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`${member.name} GitHub`}
-                  className="flex h-10 w-10 items-center justify-center rounded-full border border-line text-fg-muted transition-all duration-300 hover:scale-110 hover:border-accent-500 hover:bg-accent-500 hover:text-primary-950"
-                >
-                  <FaGithub size={18} />
-                </a>
-                <a
-                  href={member.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`${member.name} LinkedIn`}
-                  className="flex h-10 w-10 items-center justify-center rounded-full border border-line text-fg-muted transition-all duration-300 hover:scale-110 hover:border-accent-500 hover:bg-accent-500 hover:text-primary-950"
-                >
-                  <FaLinkedin size={18} />
-                </a>
-              </div>
+
+            <h3 className="text-lg sm:text-xl font-bold text-fg-strong">
+              {member.name}
+            </h3>
+            <p className="mt-1 text-sm font-semibold text-brand">
+              {member.role}
+            </p>
+            <p className="mt-3 text-sm leading-6 text-fg-muted max-w-xs">
+              {member.description}
+            </p>
+
+            {/* Social Buttons */}
+            <div className="mt-5 flex gap-3">
+              <a
+                href={member.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`${member.name} GitHub`}
+                className="flex h-10 w-10 items-center justify-center rounded-full bg-chip text-fg-muted hover:bg-primary-900 hover:text-primary-50 hover:scale-110 transition-all duration-300"
+              >
+                <FaGithub size={18} />
+              </a>
+              <a
+                href={member.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`${member.name} LinkedIn`}
+                className="flex h-10 w-10 items-center justify-center rounded-full bg-chip text-fg-muted hover:bg-[#0A66C2] hover:text-white hover:scale-110 transition-all duration-300"
+              >
+                <FaLinkedin size={18} />
+              </a>
             </div>
-          </article>
+          </motion.article>
         ))}
-      </div>
+      </motion.div>
     </section>
   );
 }

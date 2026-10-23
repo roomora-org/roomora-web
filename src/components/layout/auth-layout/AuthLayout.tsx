@@ -1,4 +1,4 @@
-import { Outlet, useLocation, Link } from "react-router-dom";
+import { useOutlet, useLocation, Link } from "react-router-dom";
 import { Logo } from "@/components/ui/Logo";
 import { Spotlight } from "@/components/ui/Spotlight";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
@@ -88,6 +88,7 @@ const SLIDE_EASE = [0.65, 0, 0.35, 1] as const;
 
 export function AuthLayout() {
   const location = useLocation();
+  const outlet = useOutlet(); // ✅ هذا هو الحل: useOutlet بدلاً من <Outlet />
   const variant = getVariantFromPath(location.pathname);
   const data = content[variant];
   const visualOnLeft = data.visualSide === "left";
@@ -205,15 +206,16 @@ export function AuthLayout() {
                   <Logo className="h-16" />
                 </div>
 
+                {/* ✅ This is the fix: AnimatePresence around the outlet content */}
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={location.pathname}
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -20 }}
-                    transition={{ duration: 0.4, ease: SLIDE_EASE }}
+                    transition={{ duration: 0.3, ease: SLIDE_EASE }}
                   >
-                    <Outlet />
+                    {outlet}
                   </motion.div>
                 </AnimatePresence>
               </div>
