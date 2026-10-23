@@ -1,5 +1,5 @@
-import { AuthLayout, SEO } from "@/components/layout";
 import { AuthCard, VerifyEmailCard } from "@/components/auth";
+import { SEO } from "@/components/layout";
 
 export default function VerifyEmailPage() {
   return (
@@ -9,11 +9,9 @@ export default function VerifyEmailPage() {
         description="Verify your Roomora email address."
         path="/verify-email"
       />
-      <AuthLayout variant="verify-email">
-        <AuthCard title="Email verification">
-          <VerifyEmailCard />
-        </AuthCard>
-      </AuthLayout>
+      <AuthCard title="Email verification">
+        <VerifyEmailCard />
+      </AuthCard>
     </>
   );
 }

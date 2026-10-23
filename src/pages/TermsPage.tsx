@@ -1,4 +1,5 @@
 import { LegalPageLayout } from "@/components/layout/LegalPageLayout";
+import { SEO } from "@/components/layout/SEO";
 
 export default function TermsPage() {
   const sections = [
@@ -180,12 +181,18 @@ export default function TermsPage() {
   ];
 
   return (
-    <LegalPageLayout
-      title="Terms of Service"
-      subtitle="Please read these terms carefully before using Roomora."
-      lastUpdated="October 22, 2026"
-      path="/terms"
-      sections={sections}
-    />
+    <>
+      <SEO
+        title="Terms of Service"
+        description="Please read these terms carefully before using Roomora."
+        path="/terms"
+      />
+      <LegalPageLayout
+        title="Terms of Service"
+        subtitle="Please read these terms carefully before using Roomora."
+        lastUpdated="October 22, 2026"
+        sections={sections}
+      />
+    </>
   );
 }

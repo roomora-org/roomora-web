@@ -1,4 +1,5 @@
 import { LegalPageLayout } from "@/components/layout/LegalPageLayout";
+import { SEO } from "@/components/layout/SEO";
 
 export default function PrivacyPage() {
   const sections = [
@@ -95,7 +96,10 @@ export default function PrivacyPage() {
           <p>We implement industry-standard security measures:</p>
           <ul>
             <li>Passwords are hashed using <strong>Bcrypt</strong>.</li>
-            <li>All API communications use <strong>HTTPS</strong> and <strong>JWT</strong> tokens.</li>
+            <li>
+              All API communications use <strong>HTTPS</strong> and{" "}
+              <strong>JWT</strong> tokens.
+            </li>
             <li>Database access is restricted to authorized services.</li>
             <li>Regular security audits and vulnerability scans.</li>
           </ul>
@@ -158,13 +162,16 @@ export default function PrivacyPage() {
       title: "Third-Party Services",
       content: (
         <>
-          <p>
-            We use the following trusted third-party services:
-          </p>
+          <p>We use the following trusted third-party services:</p>
           <ul>
-            <li><strong>Stripe</strong> — for payment processing (does not store card data).</li>
+            <li>
+              <strong>Stripe</strong> — for payment processing (does not store
+              card data).
+            </li>
             <li><strong>SendGrid</strong> — for transactional emails.</li>
-            <li><strong>Vercel</strong> and <strong>Render</strong> — for hosting.</li>
+            <li>
+              <strong>Vercel</strong> and <strong>Render</strong> — for hosting.
+            </li>
           </ul>
           <p>
             Each of these services has its own privacy policy. We only share
@@ -183,7 +190,9 @@ export default function PrivacyPage() {
             us at:
           </p>
           <ul>
-            <li>Email: <a href="mailto:privacy@roomora.com">privacy@roomora.com</a></li>
+            <li>
+              Email: <a href="mailto:privacy@roomora.com">privacy@roomora.com</a>
+            </li>
             <li>Address: Ramallah, Palestine</li>
           </ul>
         </>
@@ -192,12 +201,18 @@ export default function PrivacyPage() {
   ];
 
   return (
-    <LegalPageLayout
-      title="Privacy Policy"
-      subtitle="Learn how Roomora collects, uses, and protects your data."
-      lastUpdated="October 22, 2026"
-      path="/privacy"
-      sections={sections}
-    />
+    <>
+      <SEO
+        title="Privacy Policy"
+        description="Learn how Roomora collects, uses, and protects your data."
+        path="/privacy"
+      />
+      <LegalPageLayout
+        title="Privacy Policy"
+        subtitle="Learn how Roomora collects, uses, and protects your data."
+        lastUpdated="October 22, 2026"
+        sections={sections}
+      />
+    </>
   );
 }

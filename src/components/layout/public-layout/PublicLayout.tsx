@@ -1,18 +1,15 @@
+import { Outlet } from "react-router-dom";
 import { Header } from "./Header";
 import { Footer } from "./Footer";
 import { Spotlight } from "@/components/ui/Spotlight";
 
-interface PublicLayoutProps {
-  children: React.ReactNode;
-}
-
-export function PublicLayout({ children }: PublicLayoutProps) {
+export function PublicLayout() {
   return (
     <div className="flex min-h-screen flex-col bg-surface">
       <Spotlight />
       <Header />
       <main className="flex-1 pt-20">
-        {children}
+        <Outlet />
       </main>
       <Footer />
     </div>
