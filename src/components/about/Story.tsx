@@ -1,32 +1,50 @@
+import { motion } from "framer-motion";
+
 export function Story() {
   return (
     <section className="container-custom py-12 sm:py-16">
       <div className="grid items-center gap-10 md:grid-cols-2 md:gap-14">
-        <div>
+        <motion.div
+          initial={{ opacity: 0, x: -30 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, ease: [0.65, 0, 0.35, 1] }}
+        >
           <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-brand">
             About Roomora
           </p>
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-fg-strong tracking-tight">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-fg-strong tracking-tight leading-tight">
             Our Story
           </h1>
-          <p className="mt-6 text-lg leading-8 text-fg-muted">
-            Roomora was created to make hotel management simpler and more
-            organized. We bring essential hotel operations together in one
-            place, helping teams manage rooms, reservations, and daily tasks
-            more efficiently.
+          <p className="mt-6 text-lg leading-8 text-fg-muted text-justify">
+            Roomora was born from a simple observation: hotel managers were
+            drowning in spreadsheets, WhatsApp groups, and paper logs. We saw
+            teams losing hours every day just to coordinate housekeeping,
+            maintenance, and front-desk tasks.
           </p>
-          <p className="mt-4 leading-7 text-fg-muted">
-            Our goal is to help hotel teams spend less time managing
-            operations and more time creating better guest experiences.
+          <p className="mt-4 leading-7 text-fg-muted text-justify">
+            So we built Roomora, a unified platform that brings essential hotel
+            operations together in one place. From room readiness to guest
+            folios, we help teams work smarter, not harder.
           </p>
-        </div>
-        <div className="overflow-hidden rounded-2xl">
+          <p className="mt-4 leading-7 text-fg-muted text-justify font-medium text-fg-strong">
+            More than software, Roomora is a partner in hospitality.
+          </p>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, x: 30 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, ease: [0.65, 0, 0.35, 1] }}
+          className="overflow-hidden rounded-2xl"
+        >
           <img
             src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1000&q=80"
             alt="Modern hotel with a swimming pool"
-            className="h-72 w-full object-cover md:h-96"
+            className="h-72 w-full object-cover md:h-96 hover:scale-105 transition-transform duration-500"
           />
-        </div>
+        </motion.div>
       </div>
     </section>
   );
