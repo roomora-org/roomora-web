@@ -1,119 +1,122 @@
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/Input";
+import { Loader2, Send, User, Mail, Tag } from "lucide-react";
+
+const contactSchema = z.object({
+  fullName: z.string().min(2, "Name must be at least 2 characters"),
+  email: z.string().email("Invalid email address"),
+  subject: z.string().min(3, "Subject must be at least 3 characters"),
+  message: z.string().min(10, "Message must be at least 10 characters"),
+});
+
+type ContactFormData = z.infer<typeof contactSchema>;
 
 export function ContactForm() {
-  const inputStyle = {
-    "--tw-ring-color": "#f0dec8",
-    accentColor: "#a66b42",
-  } as React.CSSProperties;
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<ContactFormData>({
+    resolver: zodResolver(contactSchema),
+    defaultValues: { fullName: "", email: "", subject: "", message: "" },
+  });
 
-  const inputClassName =
-    "w-full rounded-lg border border-border bg-background px-4 py-3 text-sm outline-none transition-colors focus:border-primary-600 focus:ring-2 focus:ring-primary-200 focus:outline-none";
+  const onSubmit = async (_data: ContactFormData) => {
+    await new Promise((r) => setTimeout(r, 900));
+    toast.success("Message sent!", {
+      description: "We'll get back to you as soon as possible.",
+    });
+    reset();
+  };
 
   return (
-    <section className="mx-auto max-w-3xl px-6 py-8">
-      <div className="mb-6 text-center">
-        <h1 className="text-3xl font-bold tracking-tight text-foreground md:text-4xl">
-          Contact Us
-        </h1>
+    <section className="container-custom py-12 sm:py-16">
+      <div className="max-w-3xl mx-auto">
+        <div className="text-center mb-10">
+          <h1 className="text-3xl sm:text-4xl font-bold text-fg-strong tracking-tight mb-3">
+            Contact Us
+          </h1>
+          <p className="text-fg-muted">
+            We're here to answer your questions. Feel free to reach out!
+          </p>
+        </div>
 
-        <p className="mt-3 text-sm text-muted-foreground">
-          We’re here to answer your questions. Feel free to reach out!
-        </p>
-      </div>
-
-      <form
-        className="rounded-3xl border border-border bg-background p-6 shadow-sm md:p-8"
-        onSubmit={(event) => {
-          event.preventDefault();
-          alert("Thank you! Your message has been received.");
-        }}
-      >
-        <div className="grid gap-5 sm:grid-cols-2">
-          <div>
-            <label
-              htmlFor="fullName"
-              className="mb-2 block text-sm font-medium"
-            >
-              Full Name
-            </label>
-
-            <input
-              id="fullName"
-              name="fullName"
-              type="text"
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="bg-surface-card rounded-2xl border border-line p-6 sm:p-8 shadow-sm space-y-4"
+          noValidate
+        >
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <Input
+              label="Full Name"
               placeholder="Enter your full name"
-              required
-              style={inputStyle}
-              className={inputClassName}
+              leftIcon={<User />}
+              error={errors.fullName?.message}
+              {...register("fullName")}
+            />
+            <Input
+              type="email"
+              label="Email Address"
+              placeholder="example@email.com"
+              leftIcon={<Mail />}
+              error={errors.email?.message}
+              {...register("email")}
             />
           </div>
+
+          <Input
+            label="Subject"
+            placeholder="What is your message about?"
+            leftIcon={<Tag />}
+            error={errors.subject?.message}
+            {...register("subject")}
+          />
 
           <div>
-            <label
-              htmlFor="email"
-              className="mb-2 block text-sm font-medium"
-            >
-              Email Address
+            <label className="block text-sm font-medium text-fg mb-1.5">
+              Your Message
             </label>
-
-            <input
-              id="email"
-              name="email"
-              type="email"
-              placeholder="example@email.com"
-              required
-              style={inputStyle}
-              className={inputClassName}
+            <textarea
+              {...register("message")}
+              rows={5}
+              placeholder="Write your message here..."
+              className={`w-full rounded-xl border bg-surface px-4 py-3 text-sm text-fg placeholder:text-fg-muted/50 focus:outline-none focus:ring-2 transition-all resize-y ${
+                errors.message
+                  ? "border-danger-500 focus:ring-danger-500/30"
+                  : "border-line focus:ring-accent-500/40"
+              }`}
             />
+            {errors.message && (
+              <p className="mt-1.5 text-xs text-danger-700 dark:text-danger-500">
+                {errors.message.message}
+              </p>
+            )}
           </div>
-        </div>
 
-        <div className="mt-5">
-          <label
-            htmlFor="subject"
-            className="mb-2 block text-sm font-medium"
-          >
-            Subject
-          </label>
-
-          <input
-            id="subject"
-            name="subject"
-            type="text"
-            placeholder="What is your message about?"
-            required
-            style={inputStyle}
-            className={inputClassName}
-          />
-        </div>
-
-        <div className="mt-5">
-          <label
-            htmlFor="message"
-            className="mb-2 block text-sm font-medium"
-          >
-            Your Message
-          </label>
-
-          <textarea
-            id="message"
-            name="message"
-            rows={5}
-            placeholder="Write your message here..."
-            required
-            style={inputStyle}
-            className={`${inputClassName} resize-y`}
-          />
-        </div>
-
-        <div className="mt-6 text-center">
-          <button
+          <Button
             type="submit"
-            className="rounded-lg bg-primary-700 px-8 py-3 font-medium text-white transition-colors hover:bg-primary-800 focus:outline-none focus:ring-2 focus:ring-primary-300"
+            variant="accent"
+            size="lg"
+            className="w-full sm:w-auto"
+            disabled={isSubmitting}
           >
-            Send Message
-          </button>
-        </div>
-      </form>
+            {isSubmitting ? (
+              <>
+                <Loader2 className="h-5 w-5 animate-spin" /> Sending...
+              </>
+            ) : (
+              <>
+                <Send className="h-4 w-4" /> Send Message
+              </>
+            )}
+          </Button>
+        </form>
+      </div>
     </section>
   );
 }

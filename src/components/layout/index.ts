@@ -1,3 +1,3 @@
-export * from './Header';
-export * from './Footer';
-export * from './SEO';
+export { PublicLayout } from "./public-layout/PublicLayout";
+export { AuthLayout } from "./auth-layout/AuthLayout";
+export { SEO } from "./SEO";

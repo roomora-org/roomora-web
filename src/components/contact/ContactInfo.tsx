@@ -1,49 +1,31 @@
+import { Phone, Mail, Clock, MapPin } from "lucide-react";
+
 const contactDetails = [
-  {
-    icon: "☎",
-    title: "Phone Number",
-    value: "+970 123 4567",
-  },
-  {
-    icon: "✉",
-    title: "Email Address",
-    value: "info@roomora.com",
-  },
-  {
-    icon: "◷",
-    title: "Working Hours",
-    value: "Sunday – Thursday, 9 AM – 5 PM",
-  },
-  {
-    icon: "⌖",
-    title: "Location",
-    value: "Palestine",
-  },
+  { icon: Phone, title: "Phone Number", value: "+970 123 4567" },
+  { icon: Mail, title: "Email Address", value: "info@roomora.com" },
+  { icon: Clock, title: "Working Hours", value: "Sun – Thu, 9 AM – 5 PM" },
+  { icon: MapPin, title: "Location", value: "Palestine" },
 ];
 
 export function ContactInfo() {
   return (
-    <section className="mx-auto grid max-w-3xl grid-cols-1 gap-5 px-6 py-6 sm:grid-cols-2">
-      {contactDetails.map((item) => (
-        <article
-          key={item.title}
-          className="flex min-h-28 items-center justify-center gap-3 rounded-2xl border border-[#e2c4a3] bg-[#fdfaf6] p-5 shadow-sm transition-all duration-200 hover:border-[#c0875a] hover:shadow-md"
-        >
-          <div className="flex-1 text-center">
-            <h2 className="font-semibold text-[#6b402b]">
-              {item.title}
-            </h2>
-
-            <p className="mt-2 text-sm text-[#855235]">
-              {item.value}
-            </p>
-          </div>
-
-          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#e2c4a3] bg-[#f9f0e6] text-lg text-[#a66b42]">
-            {item.icon}
-          </span>
-        </article>
-      ))}
+    <section className="container-custom pb-16">
+      <div className="max-w-3xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-5">
+        {contactDetails.map(({ icon: Icon, title, value }) => (
+          <article
+            key={title}
+            className="flex items-center gap-4 rounded-2xl border border-line bg-surface-card p-5 shadow-sm hover:border-accent-400 hover:shadow-md transition-all"
+          >
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-accent-100 dark:bg-accent-500/15 text-accent-600 dark:text-accent-400">
+              <Icon className="h-5 w-5" />
+            </div>
+            <div>
+              <h2 className="font-semibold text-fg-strong text-sm">{title}</h2>
+              <p className="mt-1 text-sm text-fg-muted">{value}</p>
+            </div>
+          </article>
+        ))}
+      </div>
     </section>
   );
 }

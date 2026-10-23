@@ -176,6 +176,32 @@ body {
   border: 1px solid var(--glass-border);
 }
 
+/* Legal pages prose styling */
+.prose-legal h3 {
+  @apply text-lg font-semibold text-fg-strong mt-6 mb-2;
+}
+.prose-legal p {
+  @apply text-fg-muted leading-relaxed;
+}
+.prose-legal ul, .prose-legal ol {
+  @apply space-y-2 ml-6;
+}
+.prose-legal ul {
+  @apply list-disc;
+}
+.prose-legal ol {
+  @apply list-decimal;
+}
+.prose-legal li {
+  @apply text-fg-muted leading-relaxed;
+}
+.prose-legal strong {
+  @apply text-fg-strong font-semibold;
+}
+.prose-legal a {
+  @apply text-brand underline hover:text-accent-600 transition-colors;
+}
+
 /* Marquee animation */
 @keyframes marquee {
   0% { transform: translateX(0); }

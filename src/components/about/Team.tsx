@@ -1,5 +1,4 @@
-
-import { Github, Linkedin } from "lucide-react";
+import { FaGithub, FaLinkedin } from "react-icons/fa6";
 
 const teamMembers = [
   {
@@ -60,27 +59,24 @@ const teamMembers = [
 
 export function Team() {
   return (
-    <section className="mx-auto max-w-7xl px-6 py-16">
+    <section className="container-custom py-16">
       <div className="mx-auto mb-12 max-w-2xl text-center">
-        <p className="text-sm font-semibold uppercase tracking-widest text-primary">
+        <p className="text-sm font-semibold uppercase tracking-widest text-brand">
           Meet the Team
         </p>
-
-        <h2 className="mt-3 text-3xl font-bold md:text-4xl">
+        <h2 className="mt-3 text-3xl font-bold md:text-4xl text-fg-strong">
           The People Behind Roomora
         </h2>
-
-        <p className="mt-5 leading-7 text-muted-foreground">
+        <p className="mt-5 leading-7 text-fg-muted">
           Our team works together to make hotel management simpler,
           smarter, and more efficient.
         </p>
       </div>
-
-      <div className="grid gap-7 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-6 sm:gap-7 sm:grid-cols-2 lg:grid-cols-3">
         {teamMembers.map((member) => (
           <article
             key={member.name}
-            className="group overflow-hidden rounded-2xl border border-orange-200 bg-background shadow-sm transition-all duration-300 hover:-translate-y-2 hover:border-orange-400 hover:shadow-xl"
+            className="group overflow-hidden rounded-2xl border border-line bg-surface-card shadow-sm transition-all duration-300 hover:-translate-y-2 hover:border-accent-400 hover:shadow-xl"
           >
             <div className="overflow-hidden">
               <img
@@ -90,39 +86,34 @@ export function Team() {
                 className="h-64 w-full object-cover transition-transform duration-500 group-hover:scale-105"
               />
             </div>
-
             <div className="p-6 text-center">
-              <h3 className="text-xl font-bold text-foreground">
+              <h3 className="text-xl font-bold text-fg-strong">
                 {member.name}
               </h3>
-
-              <p className="mt-2 text-sm font-semibold text-primary">
+              <p className="mt-2 text-sm font-semibold text-brand">
                 {member.role}
               </p>
-
-              <p className="mt-4 min-h-12 text-sm leading-6 text-muted-foreground">
+              <p className="mt-4 min-h-12 text-sm leading-6 text-fg-muted">
                 {member.description}
               </p>
-
-              <div className="mt-5 flex justify-center gap-4">
+              <div className="mt-5 flex justify-center gap-3">
                 <a
                   href={member.github}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`${member.name} GitHub`}
-                  className="flex h-10 w-10 items-center justify-center rounded-full border border-orange-200 text-foreground transition-all duration-300 hover:scale-110 hover:border-orange-500 hover:bg-orange-500 hover:text-white"
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-line text-fg-muted transition-all duration-300 hover:scale-110 hover:border-accent-500 hover:bg-accent-500 hover:text-primary-950"
                 >
-                  <Github size={19} />
+                  <FaGithub size={18} />
                 </a>
-
                 <a
                   href={member.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`${member.name} LinkedIn`}
-                  className="flex h-10 w-10 items-center justify-center rounded-full border border-orange-200 text-foreground transition-all duration-300 hover:scale-110 hover:border-orange-500 hover:bg-orange-500 hover:text-white"
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-line text-fg-muted transition-all duration-300 hover:scale-110 hover:border-accent-500 hover:bg-accent-500 hover:text-primary-950"
                 >
-                  <Linkedin size={19} />
+                  <FaLinkedin size={18} />
                 </a>
               </div>
             </div>
