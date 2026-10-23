@@ -16,18 +16,22 @@ export function Story() {
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-fg-strong tracking-tight leading-tight">
             Our Story
           </h1>
-          <p className="mt-6 text-lg leading-8 text-fg-muted text-justify">
+          
+          {/* تم إضافة text-left للموبايل و text-justify للديسكتوب */}
+          <p className="mt-6 text-lg leading-8 text-fg-muted text-left md:text-justify">
             Roomora was born from a simple observation: hotel managers were
             drowning in spreadsheets, WhatsApp groups, and paper logs. We saw
             teams losing hours every day just to coordinate housekeeping,
             maintenance, and front-desk tasks.
           </p>
-          <p className="mt-4 leading-7 text-fg-muted text-justify">
+          
+          <p className="mt-4 leading-7 text-fg-muted text-left md:text-justify">
             So we built Roomora, a unified platform that brings essential hotel
             operations together in one place. From room readiness to guest
             folios, we help teams work smarter, not harder.
           </p>
-          <p className="mt-4 leading-7 text-fg-muted text-justify font-medium text-fg-strong">
+          
+          <p className="mt-4 leading-7 text-fg-muted text-left md:text-justify font-medium text-fg-strong">
             More than software, Roomora is a partner in hospitality.
           </p>
         </motion.div>
