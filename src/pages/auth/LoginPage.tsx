@@ -1,5 +1,5 @@
-import { AuthLayout, SEO } from "@/components/layout";
 import { AuthCard, SignInForm } from "@/components/auth";
+import { SEO } from "@/components/layout";
 
 export default function LoginPage() {
   return (
@@ -9,14 +9,12 @@ export default function LoginPage() {
         description="Sign in to your Roomora account to manage your hotel operations."
         path="/login"
       />
-      <AuthLayout variant="login">
-        <AuthCard
-          title="Sign in to your account"
-          subtitle="Welcome back! Please enter your details."
-        >
-          <SignInForm />
-        </AuthCard>
-      </AuthLayout>
+      <AuthCard
+        title="Sign in to your account"
+        subtitle="Welcome back! Please enter your details."
+      >
+        <SignInForm />
+      </AuthCard>
     </>
   );
 }

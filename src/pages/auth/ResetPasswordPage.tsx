@@ -1,5 +1,5 @@
-import { AuthLayout, SEO } from "@/components/layout";
 import { AuthCard, ResetPasswordForm } from "@/components/auth";
+import { SEO } from "@/components/layout";
 
 export default function ResetPasswordPage() {
   return (
@@ -9,14 +9,12 @@ export default function ResetPasswordPage() {
         description="Choose a new password for your Roomora account."
         path="/reset-password"
       />
-      <AuthLayout variant="reset-password">
-        <AuthCard
-          title="Set a new password"
-          subtitle="Choose a strong password to secure your account."
-        >
-          <ResetPasswordForm />
-        </AuthCard>
-      </AuthLayout>
+      <AuthCard
+        title="Set a new password"
+        subtitle="Choose a strong password to secure your account."
+      >
+        <ResetPasswordForm />
+      </AuthCard>
     </>
   );
 }

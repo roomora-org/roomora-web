@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Outlet, useLocation, Link } from "react-router-dom";
 import { Logo } from "@/components/ui/Logo";
 import { Spotlight } from "@/components/ui/Spotlight";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
@@ -10,11 +10,6 @@ type AuthVariant =
   | "forgot-password"
   | "reset-password"
   | "verify-email";
-
-interface AuthLayoutProps {
-  children: React.ReactNode;
-  variant?: AuthVariant;
-}
 
 interface ContentItem {
   headline: string;
@@ -81,9 +76,19 @@ const content: Record<AuthVariant, ContentItem> = {
   },
 };
 
+const getVariantFromPath = (pathname: string): AuthVariant => {
+  if (pathname.includes("/register")) return "register";
+  if (pathname.includes("/forgot-password")) return "forgot-password";
+  if (pathname.includes("/reset-password")) return "reset-password";
+  if (pathname.includes("/verify-email")) return "verify-email";
+  return "login";
+};
+
 const SLIDE_EASE = [0.65, 0, 0.35, 1] as const;
 
-export function AuthLayout({ children, variant = "login" }: AuthLayoutProps) {
+export function AuthLayout() {
+  const location = useLocation();
+  const variant = getVariantFromPath(location.pathname);
   const data = content[variant];
   const visualOnLeft = data.visualSide === "left";
 
@@ -196,12 +201,21 @@ export function AuthLayout({ children, variant = "login" }: AuthLayoutProps) {
               }`}
             >
               <div className="w-full max-w-md">
-                {/* Mobile-only logo above the form */}
                 <div className="flex lg:hidden justify-center mb-6">
                   <Logo className="h-16" />
                 </div>
 
-                <AnimatePresence mode="wait">{children}</AnimatePresence>
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={location.pathname}
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -20 }}
+                    transition={{ duration: 0.4, ease: SLIDE_EASE }}
+                  >
+                    <Outlet />
+                  </motion.div>
+                </AnimatePresence>
               </div>
             </motion.div>
           </div>

@@ -1,5 +1,5 @@
-import { AuthLayout, SEO } from "@/components/layout";
 import { AuthCard, ForgotPasswordForm } from "@/components/auth";
+import { SEO } from "@/components/layout";
 
 export default function ForgotPasswordPage() {
   return (
@@ -9,14 +9,12 @@ export default function ForgotPasswordPage() {
         description="Reset your Roomora account password."
         path="/forgot-password"
       />
-      <AuthLayout variant="forgot-password">
-        <AuthCard
-          title="Forgot your password?"
-          subtitle="Enter your email and we'll send you a link to reset it."
-        >
-          <ForgotPasswordForm />
-        </AuthCard>
-      </AuthLayout>
+      <AuthCard
+        title="Forgot your password?"
+        subtitle="Enter your email and we'll send you a link to reset it."
+      >
+        <ForgotPasswordForm />
+      </AuthCard>
     </>
   );
 }

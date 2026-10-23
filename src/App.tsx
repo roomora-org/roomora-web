@@ -1,10 +1,12 @@
 import { useEffect } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
-import { PublicLayout } from "@/components/layout";
+import { PublicLayout, AuthLayout } from "@/components/layout";
 import { Spotlight } from "@/components/ui/Spotlight";
 
 // Public Pages
 import Home from "@/pages/Home";
+import AboutPage from "@/pages/AboutPage";
+import ContactPage from "@/pages/ContactPage";
 import TermsPage from "@/pages/TermsPage";
 import PrivacyPage from "@/pages/PrivacyPage";
 
@@ -54,34 +56,29 @@ function App() {
       <Spotlight />
       <Routes>
         {/* ============================================
-            Public Routes
+            Public Routes (with PublicLayout)
             ============================================ */}
-        <Route
-          path="/"
-          element={
-            <PublicLayout>
-              <Home />
-            </PublicLayout>
-          }
-        />
+        <Route element={<PublicLayout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/terms" element={<TermsPage />} />
+          <Route path="/privacy" element={<PrivacyPage />} />
+        </Route>
 
         {/* ============================================
-            Legal Routes (self-wrapped with PublicLayout)
+            Auth Routes (with AuthLayout)
             ============================================ */}
-        <Route path="/terms" element={<TermsPage />} />
-        <Route path="/privacy" element={<PrivacyPage />} />
+        <Route element={<AuthLayout />}>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
+          <Route path="/verify-email" element={<VerifyEmailPage />} />
+        </Route>
 
         {/* ============================================
-            Auth Routes
-            ============================================ */}
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-        <Route path="/reset-password" element={<ResetPasswordPage />} />
-        <Route path="/verify-email" element={<VerifyEmailPage />} />
-
-        {/* ============================================
-            Onboarding
+            Onboarding (standalone)
             ============================================ */}
         <Route path="/onboarding" element={<OnboardingPage />} />
 

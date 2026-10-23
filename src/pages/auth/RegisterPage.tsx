@@ -1,5 +1,5 @@
-import { AuthLayout, SEO } from "@/components/layout";
 import { SignUpForm } from "@/components/auth";
+import { SEO } from "@/components/layout";
 
 export default function RegisterPage() {
   return (
@@ -9,9 +9,7 @@ export default function RegisterPage() {
         description="Create your Roomora account and start your 14-day free trial."
         path="/register"
       />
-      <AuthLayout variant="register">
-        <SignUpForm />
-      </AuthLayout>
+      <SignUpForm />
     </>
   );
 }
