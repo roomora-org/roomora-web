@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
@@ -8,6 +8,9 @@ import confetti from "canvas-confetti";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { StarRating } from "@/components/ui/StarRating";
+import { Logo } from "@/components/ui/Logo";
+import { ThemeToggle } from "@/components/ui/ThemeToggle";
+import { useAuth } from "@/context/AuthContext";
 import { SEO } from "@/components/layout";
 import {
   hotelProfileSchema,
@@ -35,6 +38,7 @@ const SLIDE_EASE = [0.65, 0, 0.35, 1] as const;
 
 export default function OnboardingPage() {
   const navigate = useNavigate();
+  const { login } = useAuth();
   const [step, setStep] = useState<Step>(2);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -56,6 +60,8 @@ export default function OnboardingPage() {
   // 🎉 Confetti when reaching step 3
   useEffect(() => {
     if (step !== 3) return;
+    // respect users who asked for less motion
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const duration = 2000;
     const animationEnd = Date.now() + duration;
@@ -93,7 +99,9 @@ export default function OnboardingPage() {
   const handleHotelSubmit = async (data: HotelProfileFormData) => {
     setIsLoading(true);
     try {
-      await authService.completeOnboarding(data);
+      const response = await authService.completeOnboarding(data);
+      // keep the app's user in sync (onboardingCompleted is now true)
+      login(response.user, response.accessToken, true);
       toast.success("Hotel profile saved!", {
         description: "Let's move on to the final step.",
       });
@@ -108,6 +116,7 @@ export default function OnboardingPage() {
     }
   };
 
+  // TODO: these routes don't exist in App.tsx yet -> they currently show the 404 page.
   const handleAddStaff = () => navigate("/dashboard/staff");
   const handleAddLater = () => navigate("/dashboard");
 
@@ -129,12 +138,26 @@ export default function OnboardingPage() {
         title="Onboarding"
         description="Set up your hotel profile and start managing your property."
         path="/onboarding"
+        noIndex
       />
 
-      <div className="min-h-screen bg-surface flex flex-col">
+      <div className="min-h-screen flex flex-col">
         {/* ---------- Progress Header ---------- */}
         <div className="w-full border-b border-line bg-surface-card">
-          <div className="container-custom py-5 sm:py-6">
+          <div className="container-custom relative py-5 sm:py-6">
+            <Link
+              to="/"
+              aria-label="Roomora home"
+              className="absolute left-4 sm:left-6 top-1/2 -translate-y-1/2 flex items-center gap-2"
+            >
+              <Logo className="h-8 sm:h-9" />
+              <span className="hidden lg:inline text-xl font-bold text-fg-strong tracking-tight">
+                Roomora
+              </span>
+            </Link>
+            <div className="absolute right-4 sm:right-6 top-1/2 -translate-y-1/2">
+              <ThemeToggle />
+            </div>
             <div className="flex items-center justify-center gap-1 sm:gap-3">
               {[1, 2, 3].map((num, idx) => {
                 const isCompleted = step > num;
@@ -249,12 +272,17 @@ export default function OnboardingPage() {
 
                   {/* ===== Star Rating ===== */}
                   <div>
-                    <label className="block text-sm font-medium text-fg mb-2">
+                    <p className="block text-sm font-medium text-fg mb-2">
                       Star rating
-                    </label>
+                    </p>
                     <StarRating
                       value={currentRating}
-                      onChange={(val) => hotelForm.setValue("starRating", val)}
+                      onChange={(val) =>
+                        hotelForm.setValue("starRating", val, {
+                          shouldValidate: true,
+                          shouldDirty: true,
+                        })
+                      }
                       size="lg"
                       error={!!ratingError}
                     />

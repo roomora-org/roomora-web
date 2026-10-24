@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { PublicLayout, AuthLayout } from "@/components/layout";
 import { Spotlight } from "@/components/ui/Spotlight";
+import { GuestOnly } from "@/components/auth/GuestOnly";
 
 // Public Pages
 import Home from "@/pages/Home";
@@ -53,11 +54,10 @@ function App() {
   return (
     <>
       <ScrollManager />
+      {/* The ONLY Spotlight in the app. Layouts must not render their own. */}
       <Spotlight />
       <Routes>
-        {/* ============================================
-            Public Routes (with PublicLayout)
-            ============================================ */}
+        {/* Public Routes */}
         <Route element={<PublicLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<AboutPage />} />
@@ -66,25 +66,23 @@ function App() {
           <Route path="/privacy" element={<PrivacyPage />} />
         </Route>
 
-        {/* ============================================
-            Auth Routes (with AuthLayout)
-            ============================================ */}
+        {/* Auth Routes */}
         <Route element={<AuthLayout />}>
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+          {/* guests only: signed-in users are redirected away */}
+          <Route element={<GuestOnly />}>
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+          </Route>
+          {/* always reachable (email links) */}
           <Route path="/reset-password" element={<ResetPasswordPage />} />
           <Route path="/verify-email" element={<VerifyEmailPage />} />
         </Route>
 
-        {/* ============================================
-            Onboarding (standalone)
-            ============================================ */}
+        {/* Onboarding (standalone) */}
         <Route path="/onboarding" element={<OnboardingPage />} />
 
-        {/* ============================================
-            Error Routes
-            ============================================ */}
+        {/* Error Routes */}
         <Route path="/401" element={<UnauthorizedPage />} />
         <Route path="/403" element={<ForbiddenPage />} />
         <Route path="/500" element={<ServerErrorPage />} />

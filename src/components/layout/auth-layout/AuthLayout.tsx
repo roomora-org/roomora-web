@@ -1,6 +1,6 @@
+import { useState } from "react";
 import { useOutlet, useLocation, Link } from "react-router-dom";
 import { Logo } from "@/components/ui/Logo";
-import { Spotlight } from "@/components/ui/Spotlight";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -18,6 +18,7 @@ interface ContentItem {
   visualSide: "left" | "right";
 }
 
+// NOTE: dummy marketing copy; replace when final content is ready.
 const content: Record<AuthVariant, ContentItem> = {
   login: {
     headline: "Welcome back to Roomora",
@@ -34,11 +35,7 @@ const content: Record<AuthVariant, ContentItem> = {
     headline: "Start your journey with Roomora",
     subline:
       "Join hundreds of boutique hotels streamlining their operations with our smart PMS.",
-    features: [
-      "14-day free trial",
-      "No credit card required",
-      "Cancel anytime",
-    ],
+    features: ["14-day free trial", "No credit card required", "Cancel anytime"],
     visualSide: "right",
   },
   "forgot-password": {
@@ -86,20 +83,30 @@ const getVariantFromPath = (pathname: string): AuthVariant => {
 
 const SLIDE_EASE = [0.65, 0, 0.35, 1] as const;
 
+/**
+ * Renders the route's page but keeps showing the OLD page while it animates out.
+ * Without this, `useOutlet()` hands the NEW page to the exiting element, so the exit
+ * animation played on the wrong content. It captures the outlet once, on mount.
+ */
+function FrozenOutlet() {
+  const outlet = useOutlet();
+  const [frozen] = useState(outlet);
+  return <>{frozen}</>;
+}
+
 export function AuthLayout() {
   const location = useLocation();
-  const outlet = useOutlet(); // ✅ هذا هو الحل: useOutlet بدلاً من <Outlet />
   const variant = getVariantFromPath(location.pathname);
   const data = content[variant];
   const visualOnLeft = data.visualSide === "left";
 
+  // No bg-* on the root: the body's dotted background stays visible.
+  // No <Spotlight />: it is mounted once in App.tsx.
   return (
-    <div className="relative min-h-screen flex flex-col bg-surface overflow-hidden">
-      <Spotlight />
-
+    <div className="relative min-h-screen flex flex-col overflow-hidden">
       {/* Top bar */}
       <header className="relative z-10 flex items-center justify-between px-4 sm:px-6 lg:px-10 py-4 sm:py-5">
-        <Link to="/" className="flex items-center gap-2 group">
+        <Link to="/" className="flex items-center gap-2 group" aria-label="Roomora home">
           <Logo className="h-9 sm:h-10 transition-transform group-hover:scale-105" />
           <span className="text-xl sm:text-2xl font-bold text-fg-strong tracking-tight">
             Roomora
@@ -109,16 +116,10 @@ export function AuthLayout() {
         <div className="flex items-center gap-2 sm:gap-4">
           <ThemeToggle />
           <div className="hidden sm:flex items-center gap-5 text-sm">
-            <Link
-              to="/"
-              className="text-fg-muted hover:text-brand transition-colors"
-            >
+            <Link to="/" className="text-fg-muted hover:text-brand transition-colors">
               Home
             </Link>
-            <Link
-              to="/about"
-              className="text-fg-muted hover:text-brand transition-colors"
-            >
+            <Link to="/about" className="text-fg-muted hover:text-brand transition-colors">
               About
             </Link>
           </div>
@@ -129,9 +130,9 @@ export function AuthLayout() {
       <main className="relative z-10 flex-1 flex items-center justify-center px-4 sm:px-6 py-6 sm:py-8">
         <div className="w-full max-w-6xl">
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
-            {/* ---------- Visual Side (hidden on mobile) ---------- */}
+            {/* ---------- Visual side (desktop only) ---------- */}
             <motion.div
-              layout
+              layout="position"
               transition={{ duration: 0.7, ease: SLIDE_EASE }}
               className={`relative hidden lg:flex flex-col justify-center ${
                 visualOnLeft ? "lg:order-1" : "lg:order-2"
@@ -156,32 +157,23 @@ export function AuthLayout() {
                         backgroundSize: "22px 22px",
                       }}
                     />
-                    <div
-                      aria-hidden
-                      className="absolute -top-24 -right-24 h-72 w-72 rounded-full bg-accent-500/30 blur-[90px]"
-                    />
-                    <div
-                      aria-hidden
-                      className="absolute -bottom-24 -left-24 h-72 w-72 rounded-full bg-primary-500/30 blur-[90px]"
-                    />
+                    <div aria-hidden className="absolute -top-24 -right-24 h-72 w-72 rounded-full bg-accent-500/30 blur-[90px]" />
+                    <div aria-hidden className="absolute -bottom-24 -left-24 h-72 w-72 rounded-full bg-primary-500/30 blur-[90px]" />
 
+                    {/* This panel is dark in BOTH themes -> always use the cream logo
+                        (was brightness-0 invert, which turned the logo into a flat white blob) */}
                     <div className="relative z-10 mb-8">
-                      <Logo className="h-24 brightness-0 invert" />
+                      <Logo variant="onDark" className="h-24" />
                     </div>
 
                     <div className="relative z-10 flex flex-col items-center gap-4 w-full max-w-sm">
                       <h2 className="text-3xl font-bold text-primary-50 leading-tight">
                         {data.headline}
                       </h2>
-                      <p className="text-primary-200/90 leading-relaxed">
-                        {data.subline}
-                      </p>
+                      <p className="text-primary-200 leading-relaxed">{data.subline}</p>
                       <ul className="flex flex-col items-start gap-3 pt-4 w-full">
                         {data.features.map((f) => (
-                          <li
-                            key={f}
-                            className="flex items-start gap-3 text-sm text-primary-100/90"
-                          >
+                          <li key={f} className="flex items-start gap-3 text-sm text-primary-100">
                             <span className="h-1.5 w-1.5 rounded-full bg-accent-400 mt-1.5 shrink-0" />
                             <span className="text-left">{f}</span>
                           </li>
@@ -193,20 +185,16 @@ export function AuthLayout() {
               </AnimatePresence>
             </motion.div>
 
-            {/* ---------- Form Side ---------- */}
+            {/* ---------- Form side ---------- */}
             <motion.div
-              layout
+              layout="position"
               transition={{ duration: 0.7, ease: SLIDE_EASE }}
               className={`w-full flex justify-center ${
                 visualOnLeft ? "lg:order-2" : "lg:order-1"
               }`}
             >
+              {/* The top bar already shows the logo on mobile, so no second logo here. */}
               <div className="w-full max-w-md">
-                <div className="flex lg:hidden justify-center mb-6">
-                  <Logo className="h-16" />
-                </div>
-
-                {/* ✅ This is the fix: AnimatePresence around the outlet content */}
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={location.pathname}
@@ -215,7 +203,7 @@ export function AuthLayout() {
                     exit={{ opacity: 0, x: -20 }}
                     transition={{ duration: 0.3, ease: SLIDE_EASE }}
                   >
-                    {outlet}
+                    <FrozenOutlet />
                   </motion.div>
                 </AnimatePresence>
               </div>
@@ -228,7 +216,7 @@ export function AuthLayout() {
       <footer className="relative z-10 px-4 sm:px-6 lg:px-10 py-4 sm:py-6 border-t border-line">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-3 text-xs text-fg-muted text-center sm:text-left">
           <p>© 2026 Roomora. All rights reserved.</p>
-          <nav className="flex gap-4 sm:gap-5">
+          <nav className="flex gap-4 sm:gap-5" aria-label="Legal">
             <Link to="/privacy" className="hover:text-brand transition-colors">
               Privacy Policy
             </Link>

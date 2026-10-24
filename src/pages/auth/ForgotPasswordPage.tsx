@@ -1,7 +1,11 @@
+import { useState } from "react";
 import { AuthCard, ForgotPasswordForm } from "@/components/auth";
 import { SEO } from "@/components/layout";
 
 export default function ForgotPasswordPage() {
+  // true while the form shows its "Check your email" screen
+  const [done, setDone] = useState(false);
+
   return (
     <>
       <SEO
@@ -10,10 +14,11 @@ export default function ForgotPasswordPage() {
         path="/forgot-password"
       />
       <AuthCard
-        title="Forgot your password?"
+        title={done ? "Check your email" : "Forgot your password?"}
         subtitle="Enter your email and we'll send you a link to reset it."
+        hideHeader={done}
       >
-        <ForgotPasswordForm />
+        <ForgotPasswordForm onDone={setDone} />
       </AuthCard>
     </>
   );

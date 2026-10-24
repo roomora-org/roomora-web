@@ -8,8 +8,10 @@ export default function VerifyEmailPage() {
         title="Verify Email"
         description="Verify your Roomora email address."
         path="/verify-email"
+        noIndex
       />
-      <AuthCard title="Email verification">
+      {/* VerifyEmailCard always shows its own visible heading, so the AuthCard one is screen-reader only */}
+      <AuthCard title="Email verification" hideHeader>
         <VerifyEmailCard />
       </AuthCard>
     </>

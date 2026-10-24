@@ -5,13 +5,23 @@ import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
+import { Textarea } from "@/components/ui/Textarea";
 import { Loader2, Send, User, Mail, Tag } from "lucide-react";
 
 const contactSchema = z.object({
-  fullName: z.string().min(2, "Name must be at least 2 characters"),
+  fullName: z
+    .string()
+    .min(2, "Name must be at least 2 characters")
+    .max(80, "Name is too long"),
   email: z.string().email("Invalid email address"),
-  subject: z.string().min(3, "Subject must be at least 3 characters"),
-  message: z.string().min(10, "Message must be at least 10 characters"),
+  subject: z
+    .string()
+    .min(3, "Subject must be at least 3 characters")
+    .max(120, "Subject is too long"),
+  message: z
+    .string()
+    .min(10, "Message must be at least 10 characters")
+    .max(1000, "Message must be 1000 characters or less"),
 });
 
 type ContactFormData = z.infer<typeof contactSchema>;
@@ -28,6 +38,7 @@ export function ContactForm() {
   });
 
   const onSubmit = async (_data: ContactFormData) => {
+    // TODO (real API): POST the form to the backend. Dummy delay for now.
     await new Promise((r) => setTimeout(r, 900));
     toast.success("Message sent!", {
       description: "We'll get back to you as soon as possible.",
@@ -50,6 +61,7 @@ export function ContactForm() {
             placeholder="Enter your full name"
             leftIcon={<User />}
             error={errors.fullName?.message}
+            autoComplete="name"
             {...register("fullName")}
           />
           <Input
@@ -58,6 +70,7 @@ export function ContactForm() {
             placeholder="example@email.com"
             leftIcon={<Mail />}
             error={errors.email?.message}
+            autoComplete="email"
             {...register("email")}
           />
         </div>
@@ -70,26 +83,14 @@ export function ContactForm() {
           {...register("subject")}
         />
 
-        <div>
-          <label className="block text-sm font-medium text-fg mb-1.5">
-            Your Message
-          </label>
-          <textarea
-            {...register("message")}
-            rows={5}
-            placeholder="Write your message here..."
-            className={`w-full rounded-xl border bg-surface px-4 py-3 text-sm text-fg placeholder:text-fg-muted/50 focus:outline-none focus:ring-2 transition-all resize-y ${
-              errors.message
-                ? "border-danger-500 focus:ring-danger-500/30"
-                : "border-line focus:ring-accent-500/40"
-            }`}
-          />
-          {errors.message && (
-            <p className="mt-1.5 text-xs text-danger-700 dark:text-danger-500">
-              {errors.message.message}
-            </p>
-          )}
-        </div>
+        {/* Now a real labelled field: clicking "Your Message" focuses it */}
+        <Textarea
+          label="Your Message"
+          rows={5}
+          placeholder="Write your message here..."
+          error={errors.message?.message}
+          {...register("message")}
+        />
 
         <Button
           type="submit"
