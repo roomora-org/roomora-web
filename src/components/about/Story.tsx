@@ -17,7 +17,7 @@ export function Story() {
             Our Story
           </h1>
           
-          {/* تم إضافة text-left للموبايل و text-justify للديسكتوب */}
+          {/* left-aligned on mobile, justified on desktop */}
           <p className="mt-6 text-lg leading-8 text-fg-muted text-left md:text-justify">
             Roomora was born from a simple observation: hotel managers were
             drowning in spreadsheets, WhatsApp groups, and paper logs. We saw
@@ -31,7 +31,7 @@ export function Story() {
             folios, we help teams work smarter, not harder.
           </p>
           
-          <p className="mt-4 leading-7 text-fg-muted text-left md:text-justify font-medium text-fg-strong">
+          <p className="mt-4 leading-7 text-fg-strong text-left md:text-justify font-medium">
             More than software, Roomora is a partner in hospitality.
           </p>
         </motion.div>
@@ -46,7 +46,7 @@ export function Story() {
           <img
             src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1000&q=80"
             alt="Modern hotel with a swimming pool"
-            className="h-72 w-full object-cover md:h-96 hover:scale-105 transition-transform duration-500"
+            className="h-72 w-full object-cover md:h-96 dark:brightness-90 hover:scale-105 transition-transform duration-500"
           />
         </motion.div>
       </div>

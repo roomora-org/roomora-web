@@ -1,29 +1,30 @@
 import { cn } from "@/lib/utils";
 
-/**
- * Theme-aware logo.
- * - Light mode: /logo.png      (original brown + orange, transparent)
- * - Dark mode:  /logo-dark.png (brown recolored to cream, orange kept)
- * Both files live in /public. Control the size with a height class: <Logo className="h-10" />
- */
-export function Logo({ className }: { className?: string }) {
+type LogoVariant = "auto" | "onDark" | "onLight";
+
+interface LogoProps {
+  className?: string;
+  /**
+   * auto    -> follows the site theme (default)
+   * onDark  -> always the cream version (for permanently dark panels, e.g. the auth side panel, CTA)
+   * onLight -> always the original brown version
+   */
+  variant?: LogoVariant;
+}
+
+const base = "w-auto object-contain";
+
+export function Logo({ className, variant = "auto" }: LogoProps) {
+  if (variant === "onDark") {
+    return <img src="/logo-dark.png" alt="Roomora logo" width={426} height={640} className={cn(base, className)} />;
+  }
+  if (variant === "onLight") {
+    return <img src="/logo.png" alt="Roomora logo" width={426} height={640} className={cn(base, className)} />;
+  }
   return (
     <>
-      <img
-        src="/logo.png"
-        alt="Roomora logo"
-        width={426}
-        height={640}
-        className={cn("w-auto object-contain dark:hidden", className)}
-      />
-      <img
-        src="/logo-dark.png"
-        alt=""
-        aria-hidden="true"
-        width={426}
-        height={640}
-        className={cn("hidden w-auto object-contain dark:block", className)}
-      />
+      <img src="/logo.png" alt="Roomora logo" width={426} height={640} className={cn(base, "dark:hidden", className)} />
+      <img src="/logo-dark.png" alt="" aria-hidden="true" width={426} height={640} className={cn(base, "hidden dark:block", className)} />
     </>
   );
 }

@@ -39,7 +39,7 @@ export function VerifyEmailCard() {
 
   if (status === "loading") {
     return (
-      <div className="text-center py-8 sm:py-10">
+      <div className="text-center py-8 sm:py-10" role="status" aria-live="polite">
         <Loader2 className="h-9 w-9 sm:h-10 sm:w-10 animate-spin text-accent-500 mx-auto mb-4" />
         <h2 className="text-lg sm:text-xl font-semibold text-fg-strong mb-2">
           Verifying your email...
@@ -81,11 +81,18 @@ export function VerifyEmailCard() {
       <p className="text-sm text-fg-muted mb-6">
         The verification link is invalid or has expired.
       </p>
-      <Link to="/register">
-        <Button variant="accent" size="lg" className="w-full">
-          Request New Link
-        </Button>
-      </Link>
+      <div className="space-y-3">
+        <Link to="/register" className="block">
+          <Button variant="accent" size="lg" className="w-full">
+            Request New Link
+          </Button>
+        </Link>
+        <Link to="/login" className="block">
+          <Button variant="ghost" size="md" className="w-full">
+            Back to Sign In
+          </Button>
+        </Link>
+      </div>
     </div>
   );
 }

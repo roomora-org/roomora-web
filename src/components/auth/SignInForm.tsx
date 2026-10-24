@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
@@ -13,6 +13,7 @@ import { Loader2, Mail, Lock } from "lucide-react";
 
 export function SignInForm() {
   const { login } = useAuth();
+  const navigate = useNavigate();
 
   const {
     register,
@@ -29,9 +30,15 @@ export function SignInForm() {
         email: data.email,
         password: data.password,
       });
-      login(response.user, response.accessToken);
+      // rememberMe decides where the token is stored (see lib/auth-storage.ts)
+      login(response.user, response.accessToken, Boolean(data.rememberMe));
       toast.success("Welcome back!", {
         description: "You have been signed in successfully.",
+      });
+      // Finish onboarding first, otherwise go in.
+      // TODO: replace "/" with "/dashboard" when that route exists.
+      navigate(response.user.onboardingCompleted ? "/" : "/onboarding", {
+        replace: true,
       });
     } catch (error) {
       toast.error("Sign in failed", {
@@ -62,7 +69,9 @@ export function SignInForm() {
 
         <div>
           <div className="flex items-center justify-between mb-1.5">
-            <span className="text-sm font-medium text-fg">Password</span>
+            <span className="text-sm font-medium text-fg" aria-hidden="true">
+              Password
+            </span>
             <Link
               to="/forgot-password"
               className="text-xs font-medium text-brand hover:underline"
@@ -72,6 +81,7 @@ export function SignInForm() {
           </div>
           <Input
             type="password"
+            aria-label="Password"
             placeholder="••••••••"
             leftIcon={<Lock />}
             error={errors.password?.message}
@@ -84,7 +94,7 @@ export function SignInForm() {
           <input
             type="checkbox"
             {...register("rememberMe")}
-            className="h-4 w-4 rounded border-line bg-surface cursor-pointer"
+            className="h-4 w-4 rounded border-line-strong bg-surface cursor-pointer"
             style={{ accentColor: "var(--color-accent-500)" }}
           />
           Remember me for 30 days
@@ -108,16 +118,12 @@ export function SignInForm() {
         </Button>
       </form>
 
-      {/* Divider + Google (only in Sign In) */}
       <AuthDivider />
       <GoogleButton mode="login" />
 
       <p className="text-center text-sm text-fg-muted pt-4">
         Don't have an account?{" "}
-        <Link
-          to="/register"
-          className="text-brand font-semibold hover:underline"
-        >
+        <Link to="/register" className="text-brand font-semibold hover:underline">
           Create one
         </Link>
       </p>

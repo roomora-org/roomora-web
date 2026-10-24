@@ -2,7 +2,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
-import { motion } from "framer-motion";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { signUpSchema, type SignUpFormData } from "@/lib/validations/auth";
@@ -42,6 +41,8 @@ export function SignUpForm() {
       toast.success("Account created!", {
         description: "Please check your email to verify your account.",
       });
+      // TODO (real API): the user should land on a "check your inbox" screen and only
+      // reach /verify-email from the link in the email. This dummy token auto-verifies.
       navigate("/verify-email?token=signup-token");
     } catch (error) {
       toast.error("Registration failed", {
@@ -52,35 +53,26 @@ export function SignUpForm() {
   };
 
   return (
-    <motion.form
-      initial={{ opacity: 0, x: 20 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.4 }}
+    // plain <form>: page-change animation is handled once by AuthLayout
+    <form
       onSubmit={handleSubmit(onSubmit)}
       className="space-y-3 sm:space-y-4"
       noValidate
     >
-      <div className="text-center lg:text-left mb-5 sm:mb-6">
-        <h2 className="text-2xl font-bold text-fg-strong mb-1">
-          Create your account
-        </h2>
-        <p className="text-sm text-fg-muted">
-          Start your 14-day free trial. No credit card required.
-        </p>
-      </div>
-
       <div className="grid grid-cols-2 gap-2 sm:gap-3">
         <Input
           label="First name"
           placeholder="John"
           leftIcon={<User />}
           error={errors.firstName?.message}
+          autoComplete="given-name"
           {...register("firstName")}
         />
         <Input
           label="Last name"
           placeholder="Doe"
           error={errors.lastName?.message}
+          autoComplete="family-name"
           {...register("lastName")}
         />
       </div>
@@ -131,7 +123,7 @@ export function SignUpForm() {
           <input
             type="checkbox"
             {...register("acceptTerms")}
-            className="h-4 w-4 mt-0.5 shrink-0 rounded border-line bg-surface cursor-pointer"
+            className="h-4 w-4 mt-0.5 shrink-0 rounded border-line-strong bg-surface cursor-pointer"
             style={{ accentColor: "var(--color-accent-500)" }}
           />
           <span className="leading-relaxed">
@@ -146,7 +138,7 @@ export function SignUpForm() {
           </span>
         </label>
         {errors.acceptTerms && (
-          <p className="mt-1.5 text-xs text-danger-700 dark:text-danger-500">
+          <p className="mt-1.5 text-xs text-danger-700 dark:text-danger-500" role="alert">
             {errors.acceptTerms.message}
           </p>
         )}
@@ -175,6 +167,6 @@ export function SignUpForm() {
           Sign in
         </Link>
       </p>
-    </motion.form>
+    </form>
   );
 }

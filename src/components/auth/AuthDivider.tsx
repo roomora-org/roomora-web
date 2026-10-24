@@ -1,14 +1,13 @@
+// Two lines with the label between them (no background "mask" behind the text,
+// so the dotted page background stays intact).
 export function AuthDivider({ text = "OR" }: { text?: string }) {
   return (
-    <div className="relative my-5">
-      <div className="absolute inset-0 flex items-center">
-        <div className="w-full border-t border-line" />
-      </div>
-      <div className="relative flex justify-center text-xs">
-        <span className="bg-surface px-3 text-fg-muted font-medium uppercase tracking-wider">
-          {text}
-        </span>
-      </div>
+    <div className="my-5 flex items-center gap-3" role="separator" aria-label={text}>
+      <div className="h-px flex-1 bg-line" />
+      <span className="text-xs font-medium uppercase tracking-wider text-fg-muted">
+        {text}
+      </span>
+      <div className="h-px flex-1 bg-line" />
     </div>
   );
 }

@@ -4,7 +4,8 @@ import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/Button";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { Logo } from "@/components/ui/Logo";
-import { Menu, X } from "lucide-react";
+import { useAuth } from "@/context/AuthContext";
+import { Menu, X, LogOut } from "lucide-react";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -21,6 +22,11 @@ export function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
   const isHome = location.pathname === "/";
+  const { user, isAuthenticated, logout } = useAuth();
+
+  const initials = user
+    ? `${user.firstName?.[0] ?? ""}${user.lastName?.[0] ?? ""}`.toUpperCase()
+    : "";
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
@@ -50,6 +56,11 @@ export function Header() {
       document.getElementById(href.slice(1))?.scrollIntoView({ behavior: "smooth", block: "start" });
     }
     setIsMobileMenuOpen(false);
+  };
+
+  const handleLogout = async () => {
+    setIsMobileMenuOpen(false);
+    await logout();
   };
 
   const renderLink = (link: (typeof navLinks)[number], mobile = false) => {
@@ -94,6 +105,19 @@ export function Header() {
     );
   };
 
+  // Right-hand actions: guest vs signed-in
+  const UserChip = () => (
+    <div className="flex items-center gap-2">
+      <span
+        className="h-8 w-8 rounded-full bg-accent-500 text-primary-950 text-xs font-bold flex items-center justify-center"
+        aria-hidden="true"
+      >
+        {initials || "U"}
+      </span>
+      <span className="hidden lg:block text-sm font-medium text-fg">{user?.firstName}</span>
+    </div>
+  );
+
   return (
     <header
       className={`fixed top-0 w-full z-50 transition-all duration-300 ${
@@ -114,12 +138,23 @@ export function Header() {
 
         <div className="hidden md:flex items-center gap-3">
           <ThemeToggle />
-          <Link to="/login">
-            <Button variant="ghost" size="sm">Login</Button>
-          </Link>
-          <Link to="/register">
-            <Button variant="accent" size="sm" className="hover:-translate-y-0.5">Get Started</Button>
-          </Link>
+          {isAuthenticated ? (
+            <>
+              <UserChip />
+              <Button variant="ghost" size="sm" onClick={handleLogout} className="gap-2">
+                <LogOut className="h-4 w-4" /> Sign out
+              </Button>
+            </>
+          ) : (
+            <>
+              <Link to="/login">
+                <Button variant="ghost" size="sm">Login</Button>
+              </Link>
+              <Link to="/register">
+                <Button variant="accent" size="sm" className="hover:-translate-y-0.5">Get Started</Button>
+              </Link>
+            </>
+          )}
         </div>
 
         <button
@@ -146,14 +181,23 @@ export function Header() {
               {navLinks.map((link) => renderLink(link, true))}
               <div className="flex items-center justify-between mt-4">
                 <ThemeToggle />
-                <div className="flex gap-3">
-                  <Link to="/login">
-                    <Button variant="outline" size="sm">Login</Button>
-                  </Link>
-                  <Link to="/register">
-                    <Button variant="accent" size="sm">Get Started</Button>
-                  </Link>
-                </div>
+                {isAuthenticated ? (
+                  <div className="flex items-center gap-3">
+                    <UserChip />
+                    <Button variant="outline" size="sm" onClick={handleLogout} className="gap-2">
+                      <LogOut className="h-4 w-4" /> Sign out
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="flex gap-3">
+                    <Link to="/login">
+                      <Button variant="outline" size="sm">Login</Button>
+                    </Link>
+                    <Link to="/register">
+                      <Button variant="accent" size="sm">Get Started</Button>
+                    </Link>
+                  </div>
+                )}
               </div>
             </div>
           </motion.div>
