@@ -71,6 +71,7 @@
   --color-surface-glass: rgba(252, 251, 249, 0.8);
   --color-chip: #f6f3ee;           /* subtle fills, icon buttons */
   --color-line: #ebe5da;           /* borders, dividers      */
+  --color-line-strong: #dcd3c3;    /* input borders, hover borders */
   --color-fg: #3d3227;             /* body text              */
   --color-fg-strong: #2e1b11;      /* headings, logo         */
   --color-fg-muted: #72624c;       /* secondary text         */
@@ -123,6 +124,7 @@
   --color-surface-glass: rgba(26, 22, 20, 0.8);
   --color-chip: #2f2924;
   --color-line: #3d3227;
+  --color-line-strong: #5c4f3d;
   --color-fg: #ebe5da;
   --color-fg-strong: #fdfaf6;
   --color-fg-muted: #b8ab97;
@@ -201,6 +203,9 @@ body {
 .prose-legal a {
   @apply text-brand underline hover:text-accent-600 transition-colors;
 }
+.prose-legal code {
+  @apply rounded bg-chip px-1.5 py-0.5 font-mono text-[0.85em] text-fg-strong;
+}
 
 /* Marquee animation */
 @keyframes marquee {
@@ -221,3 +226,19 @@ body {
 
 /* Anchor targets (#features, #pricing...) stop below the fixed header */
 section[id] { scroll-margin-top: 5rem; }
+
+/* Text selection in brand colors */
+::selection {
+  background: rgba(245, 158, 11, 0.3);
+  color: inherit;
+}
+
+/* Browser autofill: stop the white/yellow flash, esp. in dark mode */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--color-fg);
+  caret-color: var(--color-fg);
+  -webkit-box-shadow: 0 0 0 1000px var(--color-surface-card) inset;
+  transition: background-color 9999s ease-in-out 0s;
+}

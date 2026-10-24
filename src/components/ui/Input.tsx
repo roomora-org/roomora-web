@@ -1,4 +1,4 @@
-import { forwardRef, useState, type InputHTMLAttributes } from "react";
+import { forwardRef, useId, useState, type InputHTMLAttributes } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -71,8 +71,9 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     const actualType = isPassword && showPassword ? "text" : type;
     const hasError = !!error;
 
-    const inputId =
-      id || props.name || `input-${Math.random().toString(36).slice(2, 9)}`;
+    // stable id (the old Math.random() changed on every render, breaking label <-> input links)
+    const autoId = useId();
+    const inputId = id || props.name || autoId;
     const s = sizeMap[inputSize];
 
     const hasLeftIcon = !!leftIcon;
@@ -125,7 +126,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
               paddingRight,
               hasError
                 ? "border-danger-500 focus:ring-danger-500/30"
-                : "border-line focus:ring-accent-500/40 focus:border-accent-400",
+                : "border-line-strong focus:ring-accent-500/40 focus:border-accent-400",
               className
             )}
             {...props}
@@ -137,7 +138,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
               onClick={() => setShowPassword((p) => !p)}
               className="absolute right-3 top-1/2 -translate-y-1/2 text-fg-muted hover:text-fg transition-colors flex items-center justify-center"
               aria-label={showPassword ? "Hide password" : "Show password"}
-              tabIndex={-1}
+              aria-pressed={showPassword}
             >
               {showPassword ? (
                 <EyeOff className={s.icon} />
