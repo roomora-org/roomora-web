@@ -9,6 +9,7 @@ import { authService } from "@/services/auth.service";
 import { useAuth } from "@/context/AuthContext";
 import { GoogleButton } from "./GoogleButton";
 import { AuthDivider } from "./AuthDivider";
+import { showApiError } from "@/lib/api-error";
 import { Loader2, Mail, Lock } from "lucide-react";
 
 export function SignInForm() {
@@ -30,23 +31,45 @@ export function SignInForm() {
         email: data.email,
         password: data.password,
       });
-      // rememberMe decides where the token is stored (see lib/auth-storage.ts)
-      login(response.user, response.accessToken, Boolean(data.rememberMe));
+
+      login(
+        response.user,
+        response.accessToken,
+        Boolean(data.rememberMe),
+        response.onboardingCompleted
+      );
+
       toast.success("Welcome back!", {
         description: "You have been signed in successfully.",
       });
-      // Finish onboarding first, otherwise go in.
-      // TODO: replace "/" with "/dashboard" when that route exists.
-      navigate(response.user.onboardingCompleted ? "/" : "/onboarding", {
-        replace: true,
-      });
-    } catch (error) {
-      toast.error("Sign in failed", {
-        description:
-          error instanceof Error
-            ? error.message
-            : "Please check your credentials and try again.",
-      });
+
+      // Route resolution mirrors AuthContext.getHomeRoute()
+      const u = response.user;
+      if (u.accountType === "PLATFORM_ADMIN") {
+        navigate("/admin/dashboard", { replace: true });
+      } else if (!u.employee?.hotel) {
+        if (u.employee?.role?.name === "Hotel Manager") {
+          navigate("/onboarding", { replace: true });
+        } else {
+          navigate("/account-incomplete", { replace: true });
+        }
+      } else {
+        navigate("/dashboard", { replace: true });
+      }
+    } catch (error: any) {
+      if (error?.response?.data?.error === "EMAIL_NOT_VERIFIED") {
+        const email = error?.response?.data?.email || data.email;
+        toast.error("Email not verified", {
+          description:
+            "Please verify your email before signing in. Redirecting...",
+        });
+        navigate(
+          `/verify-email?pending=true&email=${encodeURIComponent(email)}`,
+          { replace: true }
+        );
+        return;
+      }
+      showApiError(toast.error, error, "Sign in failed");
     }
   };
 
@@ -82,7 +105,7 @@ export function SignInForm() {
           <Input
             type="password"
             aria-label="Password"
-            placeholder="••••••••"
+            placeholder="********"
             leftIcon={<Lock />}
             error={errors.password?.message}
             autoComplete="current-password"
