@@ -1,0 +1,571 @@
+export interface City {
+  name: string;
+  nameAr: string;
+}
+
+export interface Country {
+  code: string;
+  name: string;
+  nameAr: string;
+  flag: string;
+  cities: City[];
+}
+
+export const LOCATIONS: Country[] = [
+  {
+    code: "PS",
+    name: "Palestine",
+    nameAr: "فلسطين",
+    flag: "🇵🇸",
+    cities: [
+      { name: "Ramallah", nameAr: "رام الله" },
+      { name: "Nablus", nameAr: "نابلس" },
+      { name: "Hebron", nameAr: "الخليل" },
+      { name: "Bethlehem", nameAr: "بيت لحم" },
+      { name: "Jericho", nameAr: "أريحا" },
+      { name: "Jenin", nameAr: "جنين" },
+      { name: "Tulkarm", nameAr: "طولكرم" },
+      { name: "Qalqilya", nameAr: "قلقيلية" },
+      { name: "Salfit", nameAr: "سلفيت" },
+      { name: "Tubas", nameAr: "طوباس" },
+      { name: "Gaza", nameAr: "غزة" },
+      { name: "Khan Younis", nameAr: "خان يونس" },
+      { name: "Rafah", nameAr: "رفح" },
+      { name: "Deir al-Balah", nameAr: "دير البلح" },
+      { name: "Jerusalem", nameAr: "القدس" },
+      { name: "Al-Bireh", nameAr: "البيرة" },
+      { name: "Beit Jala", nameAr: "بيت جالا" },
+      { name: "Beit Sahour", nameAr: "بيت ساحور" },
+      { name: "Rawabi", nameAr: "روابي" },
+    ],
+  },
+  {
+    code: "JO",
+    name: "Jordan",
+    nameAr: "الأردن",
+    flag: "🇯🇴",
+    cities: [
+      { name: "Amman", nameAr: "عمّان" },
+      { name: "Zarqa", nameAr: "الزرقاء" },
+      { name: "Irbid", nameAr: "إربد" },
+      { name: "Aqaba", nameAr: "العقبة" },
+      { name: "Salt", nameAr: "السلط" },
+      { name: "Madaba", nameAr: "مادبا" },
+      { name: "Jerash", nameAr: "جرش" },
+      { name: "Karak", nameAr: "الكرك" },
+      { name: "Mafraq", nameAr: "المفرق" },
+      { name: "Tafilah", nameAr: "الطفيلة" },
+      { name: "Ma'an", nameAr: "معان" },
+      { name: "Ajloun", nameAr: "عجلون" },
+      { name: "Petra", nameAr: "البتراء" },
+      { name: "Dead Sea", nameAr: "البحر الميت" },
+    ],
+  },
+  {
+    code: "EG",
+    name: "Egypt",
+    nameAr: "مصر",
+    flag: "🇪🇬",
+    cities: [
+      { name: "Cairo", nameAr: "القاهرة" },
+      { name: "Alexandria", nameAr: "الإسكندرية" },
+      { name: "Giza", nameAr: "الجيزة" },
+      { name: "Shubra El Kheima", nameAr: "شبرا الخيمة" },
+      { name: "Port Said", nameAr: "بورسعيد" },
+      { name: "Suez", nameAr: "السويس" },
+      { name: "Luxor", nameAr: "الأقصر" },
+      { name: "Aswan", nameAr: "أسوان" },
+      { name: "Mansoura", nameAr: "المنصورة" },
+      { name: "Tanta", nameAr: "طنطا" },
+      { name: "Asyut", nameAr: "أسيوط" },
+      { name: "Ismailia", nameAr: "الإسماعيلية" },
+      { name: "Faiyum", nameAr: "الفيوم" },
+      { name: "Zagazig", nameAr: "الزقازيق" },
+      { name: "Damietta", nameAr: "دمياط" },
+      { name: "Hurghada", nameAr: "الغردقة" },
+      { name: "Sharm El Sheikh", nameAr: "شرم الشيخ" },
+      { name: "Marsa Alam", nameAr: "مرسى علم" },
+      { name: "El Gouna", nameAr: "الجونة" },
+      { name: "Minya", nameAr: "المنيا" },
+      { name: "Sohag", nameAr: "سوهاج" },
+      { name: "Qena", nameAr: "قنا" },
+      { name: "Beni Suef", nameAr: "بني سويف" },
+    ],
+  },
+  {
+    code: "SA",
+    name: "Saudi Arabia",
+    nameAr: "السعودية",
+    flag: "🇸🇦",
+    cities: [
+      { name: "Riyadh", nameAr: "الرياض" },
+      { name: "Jeddah", nameAr: "جدة" },
+      { name: "Mecca", nameAr: "مكة المكرمة" },
+      { name: "Medina", nameAr: "المدينة المنورة" },
+      { name: "Dammam", nameAr: "الدمام" },
+      { name: "Khobar", nameAr: "الخبر" },
+      { name: "Dhahran", nameAr: "الظهران" },
+      { name: "Taif", nameAr: "الطائف" },
+      { name: "Tabuk", nameAr: "تبوك" },
+      { name: "Abha", nameAr: "أبها" },
+      { name: "Khamis Mushait", nameAr: "خميس مشيط" },
+      { name: "Buraidah", nameAr: "بريدة" },
+      { name: "Hail", nameAr: "حائل" },
+      { name: "Najran", nameAr: "نجران" },
+      { name: "Jubail", nameAr: "الجبيل" },
+      { name: "Yanbu", nameAr: "ينبع" },
+      { name: "Al-Ula", nameAr: "العلا" },
+      { name: "NEOM", nameAr: "نيوم" },
+    ],
+  },
+  {
+    code: "AE",
+    name: "United Arab Emirates",
+    nameAr: "الإمارات",
+    flag: "🇦🇪",
+    cities: [
+      { name: "Dubai", nameAr: "دبي" },
+      { name: "Abu Dhabi", nameAr: "أبو ظبي" },
+      { name: "Sharjah", nameAr: "الشارقة" },
+      { name: "Al Ain", nameAr: "العين" },
+      { name: "Ajman", nameAr: "عجمان" },
+      { name: "Ras Al Khaimah", nameAr: "رأس الخيمة" },
+      { name: "Fujairah", nameAr: "الفجيرة" },
+      { name: "Umm Al Quwain", nameAr: "أم القيوين" },
+    ],
+  },
+  {
+    code: "KW",
+    name: "Kuwait",
+    nameAr: "الكويت",
+    flag: "🇰🇼",
+    cities: [
+      { name: "Kuwait City", nameAr: "مدينة الكويت" },
+      { name: "Al Ahmadi", nameAr: "الأحمدي" },
+      { name: "Hawalli", nameAr: "حولي" },
+      { name: "Salmiya", nameAr: "السالمية" },
+      { name: "Al Jahra", nameAr: "الجهراء" },
+    ],
+  },
+  {
+    code: "QA",
+    name: "Qatar",
+    nameAr: "قطر",
+    flag: "🇶🇦",
+    cities: [
+      { name: "Doha", nameAr: "الدوحة" },
+      { name: "Al Rayyan", nameAr: "الريان" },
+      { name: "Al Wakrah", nameAr: "الوكرة" },
+      { name: "Al Khor", nameAr: "الخور" },
+      { name: "Lusail", nameAr: "لوسيل" },
+    ],
+  },
+  {
+    code: "BH",
+    name: "Bahrain",
+    nameAr: "البحرين",
+    flag: "🇧🇭",
+    cities: [
+      { name: "Manama", nameAr: "المنامة" },
+      { name: "Riffa", nameAr: "الرفاع" },
+      { name: "Muharraq", nameAr: "المحرق" },
+      { name: "Hamad Town", nameAr: "مدينة حمد" },
+      { name: "Isa Town", nameAr: "مدينة عيسى" },
+    ],
+  },
+  {
+    code: "OM",
+    name: "Oman",
+    nameAr: "عمان",
+    flag: "🇴🇲",
+    cities: [
+      { name: "Muscat", nameAr: "مسقط" },
+      { name: "Salalah", nameAr: "صلالة" },
+      { name: "Sohar", nameAr: "صحار" },
+      { name: "Nizwa", nameAr: "نزوى" },
+      { name: "Sur", nameAr: "صور" },
+    ],
+  },
+  {
+    code: "YE",
+    name: "Yemen",
+    nameAr: "اليمن",
+    flag: "🇾🇪",
+    cities: [
+      { name: "Sana'a", nameAr: "صنعاء" },
+      { name: "Aden", nameAr: "عدن" },
+      { name: "Taiz", nameAr: "تعز" },
+      { name: "Hodeidah", nameAr: "الحديدة" },
+      { name: "Ibb", nameAr: "إب" },
+    ],
+  },
+  {
+    code: "IQ",
+    name: "Iraq",
+    nameAr: "العراق",
+    flag: "🇮🇶",
+    cities: [
+      { name: "Baghdad", nameAr: "بغداد" },
+      { name: "Basra", nameAr: "البصرة" },
+      { name: "Mosul", nameAr: "الموصل" },
+      { name: "Erbil", nameAr: "أربيل" },
+      { name: "Najaf", nameAr: "النجف" },
+      { name: "Karbala", nameAr: "كربلاء" },
+      { name: "Kirkuk", nameAr: "كركوك" },
+      { name: "Sulaymaniyah", nameAr: "السليمانية" },
+    ],
+  },
+  {
+    code: "SY",
+    name: "Syria",
+    nameAr: "سوريا",
+    flag: "🇸🇾",
+    cities: [
+      { name: "Damascus", nameAr: "دمشق" },
+      { name: "Aleppo", nameAr: "حلب" },
+      { name: "Homs", nameAr: "حمص" },
+      { name: "Latakia", nameAr: "اللاذقية" },
+      { name: "Hama", nameAr: "حماة" },
+      { name: "Tartus", nameAr: "طرطوس" },
+    ],
+  },
+  {
+    code: "LB",
+    name: "Lebanon",
+    nameAr: "لبنان",
+    flag: "🇱🇧",
+    cities: [
+      { name: "Beirut", nameAr: "بيروت" },
+      { name: "Tripoli", nameAr: "طرابلس" },
+      { name: "Sidon", nameAr: "صيدا" },
+      { name: "Tyre", nameAr: "صور" },
+      { name: "Jounieh", nameAr: "جونية" },
+      { name: "Byblos", nameAr: "جبيل" },
+      { name: "Zahle", nameAr: "زحلة" },
+    ],
+  },
+  {
+    code: "MA",
+    name: "Morocco",
+    nameAr: "المغرب",
+    flag: "🇲🇦",
+    cities: [
+      { name: "Casablanca", nameAr: "الدار البيضاء" },
+      { name: "Rabat", nameAr: "الرباط" },
+      { name: "Marrakech", nameAr: "مراكش" },
+      { name: "Fes", nameAr: "فاس" },
+      { name: "Tangier", nameAr: "طنجة" },
+      { name: "Agadir", nameAr: "أكادير" },
+      { name: "Meknes", nameAr: "مكناس" },
+      { name: "Oujda", nameAr: "وجدة" },
+      { name: "Kenitra", nameAr: "القنيطرة" },
+      { name: "Essaouira", nameAr: "الصويرة" },
+    ],
+  },
+  {
+    code: "TN",
+    name: "Tunisia",
+    nameAr: "تونس",
+    flag: "🇹🇳",
+    cities: [
+      { name: "Tunis", nameAr: "تونس" },
+      { name: "Sfax", nameAr: "صفاقس" },
+      { name: "Sousse", nameAr: "سوسة" },
+      { name: "Kairouan", nameAr: "القيروان" },
+      { name: "Bizerte", nameAr: "بنزرت" },
+      { name: "Gabes", nameAr: "قابس" },
+      { name: "Hammamet", nameAr: "الحمامات" },
+      { name: "Djerba", nameAr: "جربة" },
+    ],
+  },
+  {
+    code: "DZ",
+    name: "Algeria",
+    nameAr: "الجزائر",
+    flag: "🇩🇿",
+    cities: [
+      { name: "Algiers", nameAr: "الجزائر العاصمة" },
+      { name: "Oran", nameAr: "وهران" },
+      { name: "Constantine", nameAr: "قسنطينة" },
+      { name: "Annaba", nameAr: "عنابة" },
+      { name: "Blida", nameAr: "البليدة" },
+      { name: "Batna", nameAr: "باتنة" },
+      { name: "Setif", nameAr: "سطيف" },
+      { name: "Tlemcen", nameAr: "تلمسان" },
+    ],
+  },
+  {
+    code: "LY",
+    name: "Libya",
+    nameAr: "ليبيا",
+    flag: "🇱🇾",
+    cities: [
+      { name: "Tripoli", nameAr: "طرابلس" },
+      { name: "Benghazi", nameAr: "بنغازي" },
+      { name: "Misrata", nameAr: "مصراتة" },
+      { name: "Tarhuna", nameAr: "ترهونة" },
+      { name: "Al Khums", nameAr: "الخمس" },
+    ],
+  },
+  {
+    code: "SD",
+    name: "Sudan",
+    nameAr: "السودان",
+    flag: "🇸🇩",
+    cities: [
+      { name: "Khartoum", nameAr: "الخرطوم" },
+      { name: "Omdurman", nameAr: "أم درمان" },
+      { name: "Port Sudan", nameAr: "بورتسودان" },
+      { name: "Kassala", nameAr: "كسلا" },
+      { name: "El Obeid", nameAr: "الأبيض" },
+    ],
+  },
+  {
+    code: "MR",
+    name: "Mauritania",
+    nameAr: "موريتانيا",
+    flag: "🇲🇷",
+    cities: [
+      { name: "Nouakchott", nameAr: "نواكشوط" },
+      { name: "Nouadhibou", nameAr: "نواذيبو" },
+      { name: "Kiffa", nameAr: "كيفة" },
+      { name: "Rosso", nameAr: "روصو" },
+    ],
+  },
+  {
+    code: "SO",
+    name: "Somalia",
+    nameAr: "الصومال",
+    flag: "🇸🇴",
+    cities: [
+      { name: "Mogadishu", nameAr: "مقديشو" },
+      { name: "Hargeisa", nameAr: "هرجيسا" },
+      { name: "Bosaso", nameAr: "بوصاصو" },
+      { name: "Kismayo", nameAr: "كيسمايو" },
+    ],
+  },
+  {
+    code: "DJ",
+    name: "Djibouti",
+    nameAr: "جيبوتي",
+    flag: "🇩🇯",
+    cities: [
+      { name: "Djibouti City", nameAr: "جيبوتي" },
+      { name: "Ali Sabieh", nameAr: "علي صبيح" },
+      { name: "Tadjoura", nameAr: "تاجورة" },
+    ],
+  },
+  {
+    code: "KM",
+    name: "Comoros",
+    nameAr: "جزر القمر",
+    flag: "🇰🇲",
+    cities: [
+      { name: "Moroni", nameAr: "موروني" },
+      { name: "Mutsamudu", nameAr: "موتسامودو" },
+      { name: "Fomboni", nameAr: "فومبوني" },
+    ],
+  },
+  {
+    code: "TR",
+    name: "Turkey",
+    nameAr: "تركيا",
+    flag: "🇹🇷",
+    cities: [
+      { name: "Istanbul", nameAr: "إسطنبول" },
+      { name: "Ankara", nameAr: "أنقرة" },
+      { name: "Izmir", nameAr: "إزمير" },
+      { name: "Antalya", nameAr: "أنطاليا" },
+      { name: "Bursa", nameAr: "بورصة" },
+      { name: "Bodrum", nameAr: "بودروم" },
+      { name: "Cappadocia", nameAr: "كابادوكيا" },
+      { name: "Trabzon", nameAr: "طرابزون" },
+    ],
+  },
+  {
+    code: "MY",
+    name: "Malaysia",
+    nameAr: "ماليزيا",
+    flag: "🇲🇾",
+    cities: [
+      { name: "Kuala Lumpur", nameAr: "كوالالمبور" },
+      { name: "Penang", nameAr: "بينانغ" },
+      { name: "Johor Bahru", nameAr: "جوهور بهرو" },
+      { name: "Ipoh", nameAr: "إيبوه" },
+      { name: "Kota Kinabalu", nameAr: "كوتا كينابالو" },
+      { name: "Malacca", nameAr: "ملقا" },
+    ],
+  },
+  {
+    code: "ID",
+    name: "Indonesia",
+    nameAr: "إندونيسيا",
+    flag: "🇮🇩",
+    cities: [
+      { name: "Jakarta", nameAr: "جاكرتا" },
+      { name: "Bali", nameAr: "بالي" },
+      { name: "Surabaya", nameAr: "سورابايا" },
+      { name: "Bandung", nameAr: "باندونغ" },
+      { name: "Yogyakarta", nameAr: "يوغياكارتا" },
+      { name: "Medan", nameAr: "ميدان" },
+    ],
+  },
+  {
+    code: "TH",
+    name: "Thailand",
+    nameAr: "تايلاند",
+    flag: "🇹🇭",
+    cities: [
+      { name: "Bangkok", nameAr: "بانكوك" },
+      { name: "Chiang Mai", nameAr: "شيانغ ماي" },
+      { name: "Phuket", nameAr: "بوكيت" },
+      { name: "Pattaya", nameAr: "باتايا" },
+      { name: "Krabi", nameAr: "كرابي" },
+      { name: "Koh Samui", nameAr: "كوه ساموي" },
+    ],
+  },
+  {
+    code: "GB",
+    name: "United Kingdom",
+    nameAr: "المملكة المتحدة",
+    flag: "🇬🇧",
+    cities: [
+      { name: "London", nameAr: "لندن" },
+      { name: "Manchester", nameAr: "مانشستر" },
+      { name: "Birmingham", nameAr: "برمنغهام" },
+      { name: "Edinburgh", nameAr: "إدنبرة" },
+      { name: "Glasgow", nameAr: "غلاسكو" },
+      { name: "Liverpool", nameAr: "ليفربول" },
+    ],
+  },
+  {
+    code: "FR",
+    name: "France",
+    nameAr: "فرنسا",
+    flag: "🇫🇷",
+    cities: [
+      { name: "Paris", nameAr: "باريس" },
+      { name: "Marseille", nameAr: "مرسيليا" },
+      { name: "Lyon", nameAr: "ليون" },
+      { name: "Toulouse", nameAr: "تولوز" },
+      { name: "Nice", nameAr: "نيس" },
+      { name: "Bordeaux", nameAr: "بوردو" },
+    ],
+  },
+  {
+    code: "DE",
+    name: "Germany",
+    nameAr: "ألمانيا",
+    flag: "🇩🇪",
+    cities: [
+      { name: "Berlin", nameAr: "برلين" },
+      { name: "Munich", nameAr: "ميونخ" },
+      { name: "Hamburg", nameAr: "هامبورغ" },
+      { name: "Frankfurt", nameAr: "فرانكفورت" },
+      { name: "Cologne", nameAr: "كولونيا" },
+      { name: "Stuttgart", nameAr: "شتوتغارت" },
+    ],
+  },
+  {
+    code: "ES",
+    name: "Spain",
+    nameAr: "إسبانيا",
+    flag: "🇪🇸",
+    cities: [
+      { name: "Madrid", nameAr: "مدريد" },
+      { name: "Barcelona", nameAr: "برشلونة" },
+      { name: "Valencia", nameAr: "فالنسيا" },
+      { name: "Seville", nameAr: "إشبيلية" },
+      { name: "Malaga", nameAr: "مالقة" },
+      { name: "Granada", nameAr: "غرناطة" },
+    ],
+  },
+  {
+    code: "IT",
+    name: "Italy",
+    nameAr: "إيطاليا",
+    flag: "🇮🇹",
+    cities: [
+      { name: "Rome", nameAr: "روما" },
+      { name: "Milan", nameAr: "ميلانو" },
+      { name: "Naples", nameAr: "نابولي" },
+      { name: "Florence", nameAr: "فلورنسا" },
+      { name: "Venice", nameAr: "البندقية" },
+      { name: "Turin", nameAr: "تورينو" },
+    ],
+  },
+  {
+    code: "US",
+    name: "United States",
+    nameAr: "الولايات المتحدة",
+    flag: "🇺🇸",
+    cities: [
+      { name: "New York", nameAr: "نيويورك" },
+      { name: "Los Angeles", nameAr: "لوس أنجلوس" },
+      { name: "Chicago", nameAr: "شيكاغو" },
+      { name: "Houston", nameAr: "هيوستن" },
+      { name: "Miami", nameAr: "ميامي" },
+      { name: "San Francisco", nameAr: "سان فرانسيسكو" },
+      { name: "Washington D.C.", nameAr: "واشنطن" },
+      { name: "Boston", nameAr: "بوسطن" },
+    ],
+  },
+  {
+    code: "CA",
+    name: "Canada",
+    nameAr: "كندا",
+    flag: "🇨🇦",
+    cities: [
+      { name: "Toronto", nameAr: "تورونتو" },
+      { name: "Montreal", nameAr: "مونتريال" },
+      { name: "Vancouver", nameAr: "فانكوفر" },
+      { name: "Ottawa", nameAr: "أوتاوا" },
+      { name: "Calgary", nameAr: "كالغاري" },
+      { name: "Edmonton", nameAr: "إدمونتون" },
+    ],
+  },
+  {
+    code: "AU",
+    name: "Australia",
+    nameAr: "أستراليا",
+    flag: "🇦🇺",
+    cities: [
+      { name: "Sydney", nameAr: "سيدني" },
+      { name: "Melbourne", nameAr: "ملبورن" },
+      { name: "Brisbane", nameAr: "بريزبين" },
+      { name: "Perth", nameAr: "بيرث" },
+      { name: "Adelaide", nameAr: "أديلايد" },
+      { name: "Canberra", nameAr: "كانبرا" },
+    ],
+  },
+];
+
+// ---------- Helpers ----------
+
+export function findCountryByCode(code: string): Country | undefined {
+  return LOCATIONS.find((c) => c.code === code);
+}
+
+export function searchCountries(query: string): Country[] {
+  if (!query.trim()) return LOCATIONS;
+  const q = query.toLowerCase().trim();
+  return LOCATIONS.filter(
+    (c) =>
+      c.name.toLowerCase().includes(q) ||
+      c.nameAr.includes(q) ||
+      c.code.toLowerCase().includes(q)
+  );
+}
+
+export function getCitiesForCountry(countryCode: string): City[] {
+  return findCountryByCode(countryCode)?.cities ?? [];
+}
+
+export function searchCities(countryCode: string, query: string): City[] {
+  const cities = getCitiesForCountry(countryCode);
+  if (!query.trim()) return cities;
+  const q = query.toLowerCase().trim();
+  return cities.filter(
+    (c) => c.name.toLowerCase().includes(q) || c.nameAr.includes(q)
+  );
+}

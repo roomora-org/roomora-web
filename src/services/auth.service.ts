@@ -1,44 +1,53 @@
+import api from "./api";
 import type {
   LoginCredentials,
   RegisterStepOne,
-  HotelProfile,
   AuthResponse,
   ForgotPasswordData,
+  User,
 } from "@/types";
-
-// TODO: Replace with real API calls when backend is ready
-const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-
-const MOCK_TOKEN = "mock-jwt-token";
 
 export const authService = {
   async login(credentials: LoginCredentials): Promise<AuthResponse> {
-    await delay(900);
-    if (credentials.email === "fail@test.com") {
-      throw new Error("Invalid email or password");
-    }
-    return {
-      user: {
-        id: "mock-id",
-        firstName: "Hasan",
-        lastName: "Sammour",
-        email: credentials.email,
-        accountType: "HOTEL_EMPLOYEE",
-        emailVerified: true,
-        onboardingCompleted: true,
-      },
-      accessToken: MOCK_TOKEN,
-    };
+    const { data } = await api.post<AuthResponse>("/auth/login", credentials);
+    return data;
   },
 
   async registerStepOne(data: RegisterStepOne): Promise<{ message: string }> {
-    await delay(900);
-    return { message: `Verification email sent to ${data.email}` };
+    const { data: response } = await api.post<{ message: string }>(
+      "/auth/register",
+      {
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email,
+        phone: data.phone,
+        password: data.password,
+      }
+    );
+    return response;
+  },
+
+  async verifyEmail(token: string): Promise<AuthResponse> {
+    const { data } = await api.post<AuthResponse>("/auth/verify-email", {
+      token,
+    });
+    return data;
+  },
+
+  async resendVerification(email: string): Promise<{ message: string }> {
+    const { data } = await api.post<{ message: string }>(
+      "/auth/resend-verification",
+      { email }
+    );
+    return data;
   },
 
   async forgotPassword(data: ForgotPasswordData): Promise<{ message: string }> {
-    await delay(900);
-    return { message: `Password reset link sent to ${data.email}` };
+    const { data: response } = await api.post<{ message: string }>(
+      "/auth/forgot-password",
+      data
+    );
+    return response;
   },
 
   async resetPassword(data: {
@@ -46,52 +55,30 @@ export const authService = {
     password: string;
     confirmPassword: string;
   }): Promise<{ message: string }> {
-    await delay(900);
-    if (!data.token) throw new Error("Invalid token");
-    return { message: "Password reset successfully" };
+    const { data: response } = await api.post<{ message: string }>(
+      "/auth/reset-password",
+      data
+    );
+    return response;
   },
 
-  async verifyEmail(token: string): Promise<AuthResponse> {
-    await delay(900);
-    if (!token) throw new Error("Invalid token");
-    return {
-      user: {
-        id: "mock-id",
-        firstName: "New",
-        lastName: "User",
-        email: "new@hotel.com",
-        accountType: "HOTEL_EMPLOYEE",
-        emailVerified: true,
-        onboardingCompleted: false,
-      },
-      accessToken: MOCK_TOKEN,
-    };
+  async getCurrentUser(): Promise<User | null> {
+    try {
+      const { data } = await api.get<User>("/auth/me");
+      return data;
+    } catch {
+      return null;
+    }
   },
 
-  async completeOnboarding(profile: HotelProfile): Promise<AuthResponse> {
-    await delay(900);
-    // profile is used for API call in the future
-    console.log("Onboarding profile:", profile);
-    return {
-      user: {
-        id: "mock-id",
-        firstName: "New",
-        lastName: "User",
-        email: "new@hotel.com",
-        accountType: "HOTEL_EMPLOYEE",
-        emailVerified: true,
-        onboardingCompleted: true,
-      },
-      accessToken: MOCK_TOKEN,
-    };
+  async refreshToken(refreshToken: string): Promise<AuthResponse> {
+    const { data } = await api.post<AuthResponse>("/auth/refresh", {
+      refreshToken,
+    });
+    return data;
   },
 
-  async getCurrentUser() {
-    await delay(500);
-    return null;
-  },
-
-  async logout() {
-    await delay(300);
+  async logout(): Promise<void> {
+    await api.post("/auth/logout");
   },
 };

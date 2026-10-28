@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { signUpSchema, type SignUpFormData } from "@/lib/validations/auth";
 import { authService } from "@/services/auth.service";
+import { showApiError } from "@/lib/api-error";
 import { Loader2, Mail, Lock, User, Phone } from "lucide-react";
 
 export function SignUpForm() {
@@ -39,21 +40,18 @@ export function SignUpForm() {
         confirmPassword: data.confirmPassword,
       });
       toast.success("Account created!", {
-        description: "Please check your email to verify your account.",
+        description: "Check your email to verify your account.",
       });
-      // TODO (real API): the user should land on a "check your inbox" screen and only
-      // reach /verify-email from the link in the email. This dummy token auto-verifies.
-      navigate("/verify-email?token=signup-token");
+      navigate(
+        `/verify-email?pending=true&email=${encodeURIComponent(data.email)}`,
+        { replace: true }
+      );
     } catch (error) {
-      toast.error("Registration failed", {
-        description:
-          error instanceof Error ? error.message : "Please try again later.",
-      });
+      showApiError(toast.error, error, "Registration failed");
     }
   };
 
   return (
-    // plain <form>: page-change animation is handled once by AuthLayout
     <form
       onSubmit={handleSubmit(onSubmit)}
       className="space-y-3 sm:space-y-4"
@@ -100,7 +98,7 @@ export function SignUpForm() {
       <Input
         type="password"
         label="Password"
-        placeholder="••••••••"
+        placeholder="********"
         leftIcon={<Lock />}
         error={errors.password?.message}
         helperText="At least 8 chars, with uppercase, lowercase, and number."
@@ -111,7 +109,7 @@ export function SignUpForm() {
       <Input
         type="password"
         label="Confirm password"
-        placeholder="••••••••"
+        placeholder="********"
         leftIcon={<Lock />}
         error={errors.confirmPassword?.message}
         autoComplete="new-password"
