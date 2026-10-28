@@ -11,16 +11,12 @@ import {
   forgotPasswordSchema,
   type ForgotPasswordFormData,
 } from "@/lib/validations/auth";
+import { showApiError } from "@/lib/api-error";
 import { Loader2, Mail, ArrowLeft, CheckCircle2 } from "lucide-react";
 
-const RESEND_SECONDS = 30;
+const RESEND_SECONDS = 60;
 
-interface ForgotPasswordFormProps {
-  /** true while the success screen is showing (page uses it to swap the header) */
-  onDone?: (done: boolean) => void;
-}
-
-export function ForgotPasswordForm({ onDone }: ForgotPasswordFormProps) {
+export function ForgotPasswordForm() {
   const [sentTo, setSentTo] = useState<string | null>(null);
   const [cooldown, setCooldown] = useState(0);
   const [resending, setResending] = useState(false);
@@ -34,11 +30,6 @@ export function ForgotPasswordForm({ onDone }: ForgotPasswordFormProps) {
     defaultValues: { email: "" },
   });
 
-  useEffect(() => {
-    onDone?.(sentTo !== null);
-  }, [sentTo, onDone]);
-
-  // resend countdown
   useEffect(() => {
     if (cooldown <= 0) return;
     const t = window.setTimeout(() => setCooldown((c) => c - 1), 1000);
@@ -54,10 +45,7 @@ export function ForgotPasswordForm({ onDone }: ForgotPasswordFormProps) {
         description: "Check your inbox for the reset link.",
       });
     } catch (error) {
-      toast.error("Failed to send email", {
-        description:
-          error instanceof Error ? error.message : "Please try again.",
-      });
+      showApiError(toast.error, error, "Failed to send email");
     }
   };
 
@@ -69,10 +57,7 @@ export function ForgotPasswordForm({ onDone }: ForgotPasswordFormProps) {
       setCooldown(RESEND_SECONDS);
       toast.success("Email sent again");
     } catch (error) {
-      toast.error("Failed to resend", {
-        description:
-          error instanceof Error ? error.message : "Please try again.",
-      });
+      showApiError(toast.error, error, "Failed to resend");
     } finally {
       setResending(false);
     }
@@ -93,7 +78,7 @@ export function ForgotPasswordForm({ onDone }: ForgotPasswordFormProps) {
           Check your email
         </h2>
         <p className="text-sm text-fg-muted mb-1 max-w-sm mx-auto">
-          We've sent a password reset link to
+          If an account with that email exists, we've sent a password reset link to
         </p>
         <p className="text-sm font-semibold text-fg-strong mb-6 break-all">
           {sentTo}
